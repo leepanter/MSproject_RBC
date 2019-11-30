@@ -31,11 +31,11 @@ The information contained in this repository, including all documents, code, cod
   * Idealized goals for the project, originally organized when the project was just beginning
 
 ### Futher Information (not finished):
-* Data
+* /Data
   * /InitialData
   * /PostFilterData
   * /PreFilterData
-* Scripts:
+* /Scripts:
   * /BlankRMarkdownDocuments
   * /BlankRScipts
   * /FilteringCalculations
@@ -43,11 +43,11 @@ The information contained in this repository, including all documents, code, cod
   * /CompatabilityReadMe
   * /SeuratQC
   * /Modeling
-    * GEE
-    * Initial Data Summaries
-    * LMwFEslope
-    * LMMwREint
-    * LMMwREslope
-    * LMwFEint
-    * ModelDescriptions
-    * ModelSummaries
+    * /GEE
+    * /Initial Data Summaries
+    * /LMwFEslope
+    * /LMMwREint
+    * /LMMwREslope
+    * /LMwFEint
+    * /ModelDescriptions
+    * /ModelSummaries
