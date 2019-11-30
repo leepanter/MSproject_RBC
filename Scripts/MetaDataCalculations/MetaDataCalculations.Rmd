@@ -1,0 +1,391 @@
+---
+title: "Meta Data Calculations"
+author: "Lee Panter"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+---
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+
+<!--  ####  Description   #### -->
+<!-- 
+  This script is a separate calculation and merge of metadata variables related to the original seqData dataset.  It will output two new datasets:
+    a full, merged dataset that includes the RNA and Flow data and all metadata variables
+    a metadata-only dataseta which includes only meta data calculated in this script and merged from other datasets
+-->
+
+***
+<!--  ####  Script Dependencies   #### -->
+\begin{center}
+\LARGE{\underline{\textbf{Script Dependencies}}}
+\end{center}
+<!--  Packages -->  
+## Package Dependencies
+```{r}
+library(Matrix)
+library(stringr)
+```
+
+<!--  Working Directory  -->
+## Working Directory
+```{r}
+WD="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/MetaDataCalculations"
+setwd(WD)
+```
+
+<!-- Data  &  Variables -->       
+
+## Load Data
+
+### RBC_Project_Data.Rdata
+```{r}
+load(file = "/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/MetaDataCalculations/RBC_Project_Data.RData",
+     envir = .GlobalEnv)
+```
+
+Includes:
+
+1. flowData-Flow Cytometry Data
+2. metaData-10 metadata variables
+3. metaData.use-a subset of metaData that will be used for inculsion of separate variable types
+
+
+### in.seq.Rdata
+```{r}
+load(file = "/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/MetaDataCalculations/indseq.RData")
+```
+
+
+***
+
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Begin Script -->       
+<!------------------------------------------------------------------------------>
+
+\vspace{10pt}
+
+# Introduction 
+
+The following scipt will create the following variables:
+
+* nCount
+* nFeature
+* Percent.MT
+which are defined below
+
+***
+
+# Definitions, Terminology and Nomenclature
+* genetic identifiers (markers) -- generally referred to in the context of count data  they are parts of the genomes to which reads are mapped
+* genetic feature counts -- a count value that represents the total number of UNIQUE genetic identifiers present in an observation:
+  * Mathematically Defined as: 
+
+  $$ nFeature_{i} = \sum_{j = 1}^{38354}  I_{j} \quad for \quad i=1,\ldots,9560 $$
+  where
+
+  $$I_{j} = 
+  \begin{cases}
+  0 &\mbox{if} \quad  X_{ij}=0 \\
+  1 &\mbox{if} \quad X_{ij} > 0 \\
+  \end{cases}$$
+
+  and $\left [ X    \right ]_{ij}$ is the scRNA-seq count matrix with: Genetic markers as rows, and Cellular IDs as colums
+* genetic counts (aka total identifier reads) -- a count value that represents the total number of reads successfully mapped to any genetic identifier in an observation:
+  * Mathematically Defined as: 
+  
+$$nCount_{i} = \sum_{j = 1}^{38354}  X_{ij} \quad for \quad i=1,\ldots,9560  $$
+
+This script will output five resultant scripts in both .Rdata and .csv formats.  They are:
+
+* alldat
+  - a compilation of all variables, computations, and metadata related to any experimental outcome from the RBC data imported
+* flow
+  - strictly flow cytometry data with cullar and subject identifiers attached to each measurement
+* indseq
+  - indicator matrix with 1s wherever the presence of a gene was specified and 0s wherever there was no gene specified.  This data set is useful for calculations reguarding feature counts, and can be quite lengthy to re-calculate
+* mdata
+  - all meta-data and flow cytometry measurements
+* seq
+  - only sequencing data
+
+***
+\begin{center}
+\LARGE{\underline{\textbf{Begin Script}}}
+\end{center}
+
+
+# Create mdata dataset
+
+## metaData
+
+We first alter and merge the metaData frame so that variable typeing and naming is appropriate:
+
+```{r}
+# Set appropriate variable typing
+meta.data1=metaData
+meta.data1$cell_name=as=as.factor(meta.data1$cell_name)
+meta.data1$sample=as.factor(meta.data1$sample)
+meta.data1$type=as.factor(meta.data1$type)
+meta.data1$disease=as.factor(meta.data1$disease)
+meta.data1$plate=as.factor(meta.data1$plate)
+meta.data1$lane=as.factor(meta.data1$lane)
+meta.data1$quadrant=as.factor(meta.data1$quadrant)
+meta.data1$well384=as.factor(meta.data1$well384)
+meta.data1$ID=as.factor(meta.data1$ID)
+mdata=meta.data1
+
+# Rename variables
+x=colnames(mdata)
+x[1]="unique.cell.name"
+x[4]="cell.type"
+x[6]="subject.name"
+x[9]="well"
+x[10]="measurement.name"
+colnames(mdata)=x
+mdata$subject.no=mdata$subject.name
+levels(mdata$subject.no)=as.factor(1:27)
+```
+
+Included features in mdata dataframe
+
+\begin{center}
+	\begin{tabular}{ |c|c|c|c| } 
+		\hline
+		Variable Name & Variable Type & Variable Length & Description (if needed)\\
+		\hline
+		\hline
+		unique.cell.name & factor & 9560 (unique) & unique factor name for each measurement \\
+		\hline
+		barcode & character & 9560 (unique) & Genetic Sequential Identifier? \\
+		\hline
+		sample & factor & 25 & Separate Sample type? \\
+		\hline
+		cell.type & factor & 4 & B cells, Fibroblasts, Monocytes, or T cells \\
+		\hline
+		disease & factor & 2 & classification of diseasease type \\
+		\hline
+		subject.name & factor & 27 & study-assigned classifiers for subject \\
+		\hline
+		lane & factor & 9 & experimental designation for differential measurements \\
+		\hline
+		quadrant & factor & 4 & quadrant of measurement in PC1 vs PC2 \\
+		\hline
+		well & factor & 384 & plate measurement point \\
+		\hline
+		measurement.name & factor & 9560 (unique) & Combination of subject.name and well information \\
+		\hline
+		subject.no & factor & 27 & numerical identifier, 1-1 with subject.name \\
+		\hline
+	\end{tabular}
+\end{center}
+
+***
+
+## FlowData
+
+We now include non-empty variables from the flowData dataframe.
+
+The following operations are performed below:
+
+1. empty variables are removed from the flowData frame
+2. data typing on merge variables is set (flowData)
+3. a Flow-data only data set is saved
+4. flowData merged into mdata
+
+
+\vspace{5pt}
+
+```{r}
+flow=flowData
+x=colnames(flow)
+
+# Remove variable columns: CD11c, CD10, PD1, & Time
+flow=flow[,-c(13, 14, 19, 21)]
+x=colnames(flow)
+
+# Set variable types for factors
+flow$sample=as.factor(flow$sample)
+flow$plate=as.factor(flow$plate)
+flow$well384=as.factor(flow$well384)
+flow$ID=as.factor(flow$ID)
+
+# Save flow as .Rdata file
+save(flow, file = "flow.RData")
+
+# Save flow as .csv file
+write.csv(flow, file = "flow.csv")
+
+
+# Remove duplicate information in Flow Data
+flow.mdata=flow[,-c(1,2,3)]
+
+# Merge Flow Data into mdata
+mdata=merge(mdata, flow.mdata, by.x = "measurement.name", by.y= "ID" )
+```
+
+***
+
+## SeqData
+
+
+\vspace{10pt}
+
+```{r}
+# seq=seqData
+# seq=as.matrix(seq)
+
+# EXCESSIVE READ/WRITE TIME-- previous compile complete
+## Save seq as .Rdata file
+# save(seq, file = "seq.RData")
+
+## Save seq as .csv file
+# write.csv(seq, file = "seq.csv")
+```
+
+
+***
+
+## Calculations of nFeature, nCount, Percent.MT Variables
+
+```{r}
+seq=seqData
+seq=as.matrix(seq)
+
+# We want to calculate the following:
+## nCount_j=sum_{i=1}^38354  X_{ij}
+## nFeature_j=sum_{i=1}^38354 I_{ij} 
+##    where I_{ij}= 0 if X_{ij}=0 
+##                  1 if X_{ij}>0
+
+# Let Smt={i| i is an MT gene}
+## Percent.MT_j= ( sum_{ i in Smt} X_{ij} ) / nCount_j
+
+# We need to define the following variables:
+## I_{ij}
+## Smt={i| i is an MT gene}
+
+# seq matrix dimensions 
+dim.seq=dim(seq)
+
+#### EXCESSIVE READ/WRITE TIME-- previous compile complete
+##### LOAD indseq.RData or indseq.csv and use pre-compiled
+
+# # Create indicator matrix I
+# ind.seq=matrix(data=NA, nrow=dim.seq[1], ncol = dim.seq[2])
+# for( i in 1:dim.seq[1])
+# {
+#   for(j in 1:dim.seq[2])
+#   {
+#     if(seq[i,j]>0){ind.seq[i,j]=1}
+#     else{ind.seq[i,j]=0}
+#   }
+# }
+# 
+# # Save Indictor matrix
+# # as .Rdata file
+# save(ind.seq, file = "indseq.RData")
+# # as .csv file
+# write.csv(seq, file = "indseq.csv")
+
+#create Smt index set
+mito.genes=str_detect(genes$A1BG, pattern = "^MT-")
+str.mito.genes=genes[which(mito.genes, mito.genes==TRUE),]
+Smt=which(mito.genes, mito.genes==TRUE)
+
+# Calculate total count values
+seq.mito=seq[Smt, ]
+sum.mito=c()
+nCount=c()
+nFeature=c()
+for(j in 1:dim.seq[2])
+{
+  sum.mito[j]=sum(seq.mito[,j])
+  nCount[j]=sum(seq[,j])
+  nFeature[j]=sum(ind.seq[,j])
+}
+
+# Create Perc.MT
+Perc.Mt=c()
+for(j in 1:dim.seq[2])
+{
+  Perc.Mt[j]=sum.mito[j]/nCount[j]
+}
+
+# add Perc.MT, nCount, nFeature to mdata
+x=colnames(seq)
+feature.data=data.frame(x, nFeature, nCount, Perc.Mt)
+mdata=merge(mdata, feature.data, by.x = "measurement.name", by.y = "x")
+```
+
+***
+
+## Save mdata 
+
+```{r}
+# Save mdata as .Rdata file
+save(mdata, file = "mdata.RData")
+
+# Save mdata as .csv file
+write.csv(mdata, file = "mdata.csv")
+```
+
+***
+
+## Create Massive-Merged Data Set
+```{r}
+seq.tr=t(as.matrix(seqData))
+seq.tr=as.data.frame(seq.tr)
+seq.tr$x.seq.tr=rownames(seq.tr)
+alldat=merge(seq.tr, mdata, by.x="x.seq.tr", by.y="measurement.name")
+alldat=t(alldat)
+
+#### EXCESSIVE READ/WRITE TIME-- previous compile complete
+##### LOAD alldat.RData or alldat.csv and use pre-compiled
+# Save alldat as .Rdata file
+# save(alldat, file = "alldat.RData")
+
+# Save alldat as .csv file
+# write.csv(alldat, file = "alldat.csv")
+```
+
+
+\begin{center}
+\LARGE{\underline{\textbf{End Script}}}
+\end{center}
+<!------------------------------------------------------------------------------>
+<!-- End Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Post-Script -->       
+<!------------------------------------------------------------------------------>
+
+<!-- Notes:        -->       
+
+<!-- Compilation Errors -->       
+
+<!-- Execution Errors -->
+
+<!-- Next Scripts to Consider -->
+
+<!------------------------------------------------------------------------------>
+

@@ -26,6 +26,15 @@ library(RCurl)
 # source_url(url.source, sha_url(url.source))
 
 
+
+
+####	Original Data Set	 ####
+
+urlDataoriginal="https://github.com/leepanter/MSproject_RBC/raw/master/Data/InitialData/Initial_Data.Rdata.gz"
+RBC_Project_Data="RBC_Project_Data.RData.gz"
+download.file(urlDataoriginal,RBC_Project_Data)
+RBC_Project_Data=load(gzfile("RBC_Project_Data.RData.gz"))
+
 ####	Pre-Filter Data	 ####
 
 ### Flow
@@ -35,22 +44,22 @@ download.file(urlDataflow, flow)
 flow=read.csv(gzfile("flow.csv.gz"))
 
 #### indseq
-urlData____="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/____.csv.gz"
-____="____.csv.gz"
-download.file(urlData____, ____)
-flow=read.csv(gzfile("____.csv.gz"))
+urlDataindseq="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/indseq.csv.gz"
+indseq="indseq.csv.gz"
+download.file(urlDataindseq, indseq)
+indseq=read.csv(gzfile("indseq.csv.gz"))
 
 #### mdata
-urlData____="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/____.csv.gz"
-____="____.csv.gz"
-download.file(urlData____, ____)
-flow=read.csv(gzfile("____.csv.gz"))
+urlDatamdata="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/mdata.csv.gz"
+mdata="mdata.csv.gz"
+download.file(urlDatamdata, mdata)
+mdata=read.csv(gzfile("mdata.csv.gz"))
 
 #### seq
-urlData____="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/____.csv.gz"
-____="____.csv.gz"
-download.file(urlData____, ____)
-flow=read.csv(gzfile("____.csv.gz"))
+urlDataseq="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/seq.csv.gz"
+seq="seq.csv.gz"
+download.file(urlDataseq, seq)
+seq=read.csv(gzfile("seq.csv.gz"))
 
 
 
@@ -59,28 +68,30 @@ flow=read.csv(gzfile("____.csv.gz"))
 ####	Post-Filter Data	 ####
 
 ### flowFilter
-urlDataflow="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/flow.csv.gz"
-flow="flow.csv.gz"
-download.file(urlDataflow, flow)
-flow=read.csv(gzfile("flow.csv.gz"))
+urlDataflowFilter="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PostFilterData/flowFilter.csv.gz"
+flowFilter="flowFilter.csv.gz"
+download.file(urlDataflowFilter, flowFilter)
+flowFilter=read.csv(gzfile("flowFilter.csv.gz"))
 
 #### indseqFilter
-urlData____="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/____.csv.gz"
-____="____.csv.gz"
-download.file(urlData____, ____)
-flow=read.csv(gzfile("____.csv.gz"))
+urlDataindseqFilter="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PostFilterData/indseqFilter.csv.gz"
+indseqFilter="indseqFilter.csv.gz"
+download.file(urlDataindseqFilter, indseqFilter)
+indseqFilter=read.csv(gzfile("indseqFilter.csv.gz"))
 
 #### mdataFilter
-urlData____="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/____.csv.gz"
-____="____.csv.gz"
-download.file(urlData____, ____)
-flow=read.csv(gzfile("____.csv.gz"))
+urlDatamdataFilter="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PostFilterData/mdataFilter.csv.gz"
+mdataFilter="mdataFilter.csv.gz"
+download.file(urlDatamdataFilter, mdataFilter)
+mdataFilter=read.csv(gzfile("mdataFilter.csv.gz"))
 
 #### seqFilter
-urlData____="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PreFilterData/____.csv.gz"
-____="____.csv.gz"
-download.file(urlData____, ____)
-flow=read.csv(gzfile("____.csv.gz"))
+urlDataseqFilter="https://github.com/leepanter/MSproject_RBC/raw/master/Data/PostFilterData/seqFilter.csv.gz"
+seqFilter="seqFilter.csv.gz"
+download.file(urlDataseqFilter, seqFilter)
+seqFilter=read.csv(gzfile("seqFilter.csv.gz"))
+
+
 
 
 
