@@ -1,0 +1,285 @@
+---
+title: "Model Summaries"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+---
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+***
+
+<!--  ####  Description   #### -->
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+load("/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/Scripts/Modeling/fbln-cd34/AllCompiledEnviron.RData")
+```
+\begin{center}
+\LARGE{\underline{NON-Tranformed Models}}
+\end{center}
+
+
+
+# Summary of Intercept and Slope Parameters
+
+## Intercept
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-value  \\
+\hline
+\hline    
+M0 (lmod0) & 1.2970 & 1.485e-1 & 8.73 & <2e-16  \\
+\hline
+M1 (LMwFEint) & 1.8519e1 & 4.067e-1 & 4.554e1 &  <2e-16  \\
+\hline
+M2 (LMwFEslope) & 1.8414e1 & 4.298e-1 & 4.285e1 & <2e-16 \\
+\hline  
+M3 (LMMwREint) & 2.75 & 1.37 & 2.01 & 6.4e-2  \\
+\hline
+M4 (LMMwREslope) & 2.7551 & 1.3588 & 2.03 & 6.2e-2 \\
+\hline
+M5 (GEE) & 1.424 & 3.34e-1 & 1.819e1** & 2e-5** \\
+\hline
+\end{tabular}
+\end{center}
+Note: ** These are Wald test of a single parameter (not t-tests)
+
+## Main-Effect Slope
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-Value  \\
+\hline
+\hline
+M0 (lmod0) & 1.4241 & 9.22e-2  & 1.544e1 & <2e-16 \\
+\hline
+M1 (LMwFEint) & 2.705e-1 & 6.12e-2  & 4.42 & 1.1e-5 \\
+\hline
+M2 (LMwFEslope) & 3.051e-1 & 7.66e-2  &  3.98 & 7.3e-5 \\
+\hline
+M3 (LMMwREint) & 2.78e-1  & 6.12e-2 & 4.54 & 6.3e-6  \\
+\hline
+M4 (LMMwREslope)  & 2.775e-1 &  9.66e-2  & 2.79 & 2.12e-1 \\
+\hline
+M5 (GEEmod) & 1.297 & 7.18e-1  & 3.26** & 7.1e-2**  \\
+\hline
+\end{tabular}
+\end{center}
+Note: ** These are Wald test of a single parameter (not t-tests)
+
+
+
+# Model Summaries
+
+## M0 (lmod0)
+```{r}
+summary(lmod0)
+```
+
+## M1 (LMwFEint)
+```{r}
+summary(LMwFEint)
+```
+
+## M2 (LMwFEslope)
+```{r}
+summary(LMwFEslope)
+```
+
+## M3 (LMMwREint)
+```{r}
+summary(LMMwREint)
+```
+
+## M4 (LMMwREslope)
+```{r}
+summary(LMMwREslope)
+```
+
+## M5 (GEEmod)
+```{r}
+summary(GEEmod)
+```
+
+# Nested Model Comparisons
+```{r}
+# M0 < M1
+anova(lmod0, LMwFEint )
+
+# M1 < M2
+anova(LMwFEint, LMwFEslope)
+
+# M3 < M4
+anova(LMMwREint, LMMwREslope)
+```
+
+# AIC Measurement Statistics
+```{r}
+AIC(lmod0,LMwFEint, LMwFEslope, LMMwREint, LMMwREslope)
+```
+***
+
+\begin{center}
+\LARGE{\underline{Tranformed Models}}
+\end{center}
+
+# Summary of Intercept and Slope Parameters
+
+## Intercept
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-Value \\
+\hline
+\hline
+M0 (loglmod0) & 3.510e-1 & 2.45e-2 & 1.43e1 & < 2e-16 \\
+\hline
+M1 (logLMwFEint) & 2.7572 & 6.52e-2 & 4.23e1 & < 2e-16 \\
+\hline
+M2 (logLMwFEslope) & 2.7973 & 7.68e-2 & 3.643e1 & < 2e-16 \\
+\hline
+M3 (logLMMwREint) & 6.53e-1 & 2.22e-1 & 2.94 & 1.1e-2 \\
+\hline
+M4 (logLMMwREslope) & 6.491e-1 & 2.223e-1 & 2.92 & 1.1e-2 \\
+\hline
+M5 (logGEEmod) & 3.51e-1 & 1.25e-1 & 7.85** & 5.09e-3** \\
+\hline
+\end{tabular}
+\end{center}
+Note: ** These are Wald test of a single parameter (not t-tests)
+
+
+## Main-Effect Slope
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-value \\
+\hline
+\hline
+M0 (loglmod0) & 7.884e-1 & 4.92e-2  & 1.6e+1 & < 2e-16 \\
+\hline
+M1 (logLMwFEint) & 1.306e-1 & 3.42e-2  & 3.82 & 1.4e-4 \\
+\hline
+M2 (logLMwFEslope) & 8.38e-2 & 5.89e-2  &  1.42 & 1.5492e-1 \\
+\hline
+M3 (logLMMwREint) & 1.35e-1 & 3.42e-2  & 3.95 & 8.4e-5 \\
+\hline
+M4 (logLMMwREslope) & 1.705e-1  & 7.29e-2 & 2.34  & 6.7e-2 \\
+\hline
+M5 (logGEEmod) & 7.88e-1 &  2.2e-1  & 1.281e+1** & 3.4e-4** \\
+\hline
+\end{tabular}
+\end{center}
+Note: ** These are Wald test of a single parameter (not t-tests)
+
+
+
+# Model Summaries
+
+## M0 (loglmod0)
+```{r}
+summary(loglmod0)
+```
+
+## M1 (logLMwFEint)
+```{r}
+summary(logLMwFEint)
+```
+
+## M2 (logLMwFEslope)
+```{r}
+summary(logLMwFEslope)
+```
+
+## M3 (logLMMwREint)
+```{r}
+summary(logLMMwREint)
+```
+
+## M4 (logLMMwREslope)
+```{r}
+summary(logLMMwREslope)
+```
+
+## M5 (logGEEmod)
+```{r}
+summary(logGEEmod)
+```
+
+# Nested Model Comparisons
+```{r}
+# M0 < M1
+anova(loglmod0, logLMwFEint )
+
+# M1 < M2
+anova(logLMwFEint, logLMwFEslope)
+
+# M3 < M4
+anova(logLMMwREint, logLMMwREslope)
+```
+
+
+# AIC Measurement Statistics
+```{r}
+AIC(loglmod0, logLMwFEint, logLMwFEslope, 
+    logLMMwREint, logLMMwREslope)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Begin Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- End Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Post-Script -->       
+<!------------------------------------------------------------------------------>
+
+<!-- Notes:        -->       
+
+<!-- Compilation Errors -->       
+
+<!-- Execution Errors -->
+
+<!-- Next Scripts to Consider -->
+
+<!------------------------------------------------------------------------------>
+
