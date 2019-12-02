@@ -35,3 +35,11 @@ vignettes/*.pdf
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
 Scripts/Modeling/fbln-cd34/AllCompiledEnviron.RData
+*.log
+*.rdb
+Scripts/Modeling/fbln-cd34/ModelSummaries_fbln-cd34_cache/latex/__packages
+*.log
+*.rdx
+Scripts/Modeling/fbln-cd34/ModelSummaries_fbln-cd34.log
+Scripts/Modeling/fbln-cd34/ModelSummaries_fbln-cd34_cache/latex/unnamed-chunk-9_2c8f87cc9c92b8c5fd37cb0faf6b565c.RData
+*.log
