@@ -1,0 +1,218 @@
+---
+title: "Linear Model with Fixed Effect Intercept"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+---
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+***
+
+<!--  ####  Description   #### -->
+\begin{center}
+\LARGE{\underline{\textbf{Description}}}
+\end{center}
+
+This script will produce, and analyze a linear model with a fixed-effect subject-specific intercept, on the finalized data.  It will first produce a single response-predictor model for seq variables, and then analyze the assumptions made for OLS modeling.
+
+***
+
+<!--  ####  Script Dependencies   #### -->
+
+
+<!--  Packages -->  
+```{r, echo=FALSE}
+library(ggplot2)
+library(plyr)
+library(nlme)
+```
+
+
+<!--  Working Directory  -->       
+
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/RBC/Modeling/LMwFEint"
+setwd(WD)
+```
+
+
+<!-- Data  &  Variables -->       
+```{r, echo=FALSE}
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/alldatFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/flowFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/indseqFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/mdataFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/seqFilter.RData")
+```
+***
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Begin Script -->       
+<!------------------------------------------------------------------------------>
+
+# Initial Models (Sequencing Variables)
+
+## Response = mala, Predictor = cd19
+
+```{r, echo=FALSE}
+index.malat1=which(rownames(seqFilter)=="MALAT1")
+index.cd19=which(rownames(seqFilter)=="CD19")
+mala=seqFilter[index.malat1,]
+cd19=seqFilter[index.cd19,]
+nFeature=mdataFilter$nFeature
+nCount=mdataFilter$nCount
+Perc.Mt=mdataFilter$Perc.Mt
+subject.no=mdataFilter$subject.no
+measurement=mdataFilter$measurement.name
+dat=data.frame(subject.no, measurement, Perc.Mt, nCount, nFeature, cd19, mala)
+dat$logcd19=log(cd19+1, base = exp(1))
+dat$logmala=log(mala+1, base = exp(1))
+```
+
+\vspace{10pt}
+# Model 0
+
+## Non-Transformed Model
+```{r, fig.width=4}
+lmod0=lm(mala~cd19, dat)
+(lmod0s=summary(lmod0))
+plot(lmod0)
+```
+
+```{r}
+p=ggplot(dat, aes(x=cd19, y=mala, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  geom_abline(intercept = coefficients(lmod0)[1], slope = coefficients(lmod0)[2], color="BLUE")+
+  ggtitle("Fitted Vs Residual")+
+  xlab("Fitted Value")+
+  ylab("Residual Value")
+p
+```
+
+
+## Transformed Model
+```{r, fig.width=4}
+loglmod0=lm(logmala~logcd19, dat)
+(loglmod0s=summary(loglmod0))
+plot(loglmod0)
+```
+
+```{r}
+p=ggplot(dat, aes(x=logcd19, y=logmala, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  geom_abline(intercept = coefficients(loglmod0)[1], slope = coefficients(loglmod0)[2], color="BLUE")+
+  ggtitle("Fitted Vs Residual")+
+  xlab("Fitted Value")+
+  ylab("Residual Value")
+p
+```
+
+
+# Model 1
+```{r}
+LMwFEint=lm(mala~subject.no + cd19 , data = dat)
+print(summary(LMwFEint))
+print(AIC(LMwFEint))
+
+coefIntercept=rep(coefficients(LMwFEint)[1], times=15)
+coefSlope=rep(coefficients(LMwFEint)[16], times=15)
+
+for( i in 2:15){
+  coefIntercept[i]=coefIntercept[i]+coefficients(LMwFEint)[i]
+}
+
+plot(mala~cd19, data=dat, main="Model v Orignal Data")
+for(i in 1:15)
+{
+  abline(a=coefIntercept[i], b=coefSlope[i], col=(20+i), lty=2, lwd=2)
+}
+
+dat$fitted=fitted(LMwFEint)
+dat$resid=residuals(LMwFEint)
+
+p=ggplot(dat, aes(x=fitted, y=resid, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  ggtitle("Fitted Vs Residual")+
+  xlab("Fitted Value")+
+  ylab("Residual Value")
+p
+
+q=ggplot(dat, aes(sample = resid))+
+  stat_qq()+
+  stat_qq_line()
+q
+```
+# Log-Model 1
+```{r}
+logLMwFEint=lm(logmala~subject.no + logcd19 , data = dat)
+print(summary(logLMwFEint))
+print(AIC(logLMwFEint))
+
+coefIntercept=rep(coefficients(logLMwFEint)[1], times=15)
+coefSlope=rep(coefficients(logLMwFEint)[16], times=15)
+
+for( i in 2:15){
+  coefIntercept[i]=coefIntercept[i]+coefficients(logLMwFEint)[i]
+}
+
+plot(logmala~logcd19, data=dat, main="Model v Orignal Data")
+for(i in 1:15)
+{
+  abline(a=coefIntercept[i], b=coefSlope[i], col=(20+i), lty=2, lwd=2)
+}
+
+dat$fitted=fitted(logLMwFEint)
+dat$resid=residuals(logLMwFEint)
+
+p=ggplot(dat, aes(x=fitted, y=resid, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  ggtitle("Fitted Vs Residual")+
+  xlab("Fitted Value")+
+  ylab("Residual Value")
+p
+
+q=ggplot(dat, aes(sample = resid))+
+  stat_qq()+
+  stat_qq_line()
+q
+```
+
+<!------------------------------------------------------------------------------>
+<!-- End Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Post-Script -->       
+<!------------------------------------------------------------------------------>
+
+<!-- Notes:        -->       
+
+<!-- Compilation Errors -->       
+
+<!-- Execution Errors -->
+
+<!-- Next Scripts to Consider -->
+
+<!------------------------------------------------------------------------------>
+

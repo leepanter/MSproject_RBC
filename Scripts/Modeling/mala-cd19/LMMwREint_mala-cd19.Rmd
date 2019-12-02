@@ -1,0 +1,202 @@
+---
+title: "Linear Mixed Model with Random Effect Intercept"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+---
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+***
+
+<!--  ####  Description   #### -->
+\begin{center}
+\LARGE{\underline{\textbf{Description}}}
+\end{center}
+
+This script will produce, and analyze a linear mixed model with the following components evaluated on the final data:
+
+* a subject-specific, fixed effect intercept
+* a subject-specific, fixed effect slope
+* a subject-specific, random effect intercept
+
+It will first produce a single response-predictor model for seq variables, and then analyze the assumptions made for LMM modeling.
+
+***
+
+<!--  ####  Script Dependencies   #### -->
+
+<!--  Packages -->  
+```{r, echo=FALSE}
+library(ggplot2)
+library(plyr)
+library(nlme)
+library(lme4)
+library(lmerTest)
+```
+
+
+<!--  Working Directory  -->       
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/RBC/Modeling/LMMwREint"
+setwd(WD)
+```
+
+
+<!-- Data  &  Variables -->       
+```{r, echo=FALSE}
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/alldatFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/flowFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/indseqFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/mdataFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/seqFilter.RData")
+```
+***
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Begin Script -->       
+<!------------------------------------------------------------------------------>
+```{r, echo=FALSE}
+index.malat1=which(rownames(seqFilter)=="MALAT1")
+index.cd19=which(rownames(seqFilter)=="CD19")
+mala=seqFilter[index.malat1,]
+cd19=seqFilter[index.cd19,]
+nFeature=mdataFilter$nFeature
+nCount=mdataFilter$nCount
+Perc.Mt=mdataFilter$Perc.Mt
+subject.no=as.factor(mdataFilter$subject.no)
+measurement=mdataFilter$measurement.name
+dat=data.frame(subject.no, measurement, Perc.Mt, nCount, nFeature, cd19, mala)
+dat$logcd19=log(cd19+1, base = exp(1))
+dat$logmala=log(mala+1, base = exp(1))
+```
+
+\vspace{10pt}
+
+# Non-Transformed Model
+
+```{r}
+LMMwREint=lmer(mala~cd19+(1|subject.no), dat)
+print(summary(LMMwREint))
+print(AIC(LMMwREint))
+
+coefInt=rep(fixef(LMMwREint)[1], times=15)
+coefSlp=rep(fixef(LMMwREint)[2], times=15)
+
+randInt=ranef(LMMwREint)
+randInt=randInt$subject.no
+randInt=randInt[,1]
+
+coefInt=coefInt+randInt
+
+plot.new()
+plot(mala~cd19, data=dat, main="Model v Orignal Data")
+for(i in 1:15)
+{
+  abline(a=coefInt[i], b=coefSlp[i], col=(20+i), lty=2, lwd=2)
+}
+abline(a=fixef(LMMwREint)[1], b=fixef(LMMwREint)[2], lwd=4, col="red")
+
+print("E[intercept|b_0=0]:")
+print(fixef(LMMwREint)[1])
+print("E[slope|b_0=0]:")
+print(fixef(LMMwREint)[2])
+
+dat$fit=fitted(LMMwREint)
+dat$res=residuals(LMMwREint)
+
+p=ggplot(dat, aes(x=fit, y=res, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  ggtitle("Fitted Vs Residual")+
+  xlab("Fitted Value")+
+  ylab("Residual Value")
+p
+
+q=ggplot(dat, aes(sample = res))+
+  stat_qq()+
+  stat_qq_line()
+q
+```
+
+
+# Transformed Model
+```{r}
+logLMMwREint=lmer(logmala~logcd19+(1|subject.no), dat)
+
+print(summary(logLMMwREint))
+print(AIC(logLMMwREint))
+
+coefInt=rep(fixef(logLMMwREint)[1], times=15)
+coefSlp=rep(fixef(logLMMwREint)[2], times=15)
+
+randInt=ranef(logLMMwREint)
+randInt=randInt$subject.no
+randInt=randInt[,1]
+
+coefInt=coefInt+randInt
+
+plot.new()
+plot(logmala~logcd19, data=dat, main="Model v Orignal Data")
+for(i in 1:15)
+{
+  abline(a=coefInt[i], b=coefSlp[i], col=(20+i), lty=2, lwd=2)
+}
+abline(a=fixef(logLMMwREint)[1], b=fixef(logLMMwREint)[2], lwd=4, col="red")
+
+print("E[intercept|b_0=0]:")
+print(fixef(logLMMwREint)[1])
+print("E[slope|b_0=0]:")
+print(fixef(logLMMwREint)[2])
+
+dat$fit=fitted(logLMMwREint)
+dat$res=residuals(logLMMwREint)
+
+p=ggplot(dat, aes(x=fit, y=res, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  ggtitle("Fitted Vs Residual")+
+  xlab("Fitted Value")+
+  ylab("Residual Value")
+p
+
+q=ggplot(dat, aes(sample = res))+
+  stat_qq()+
+  stat_qq_line()
+q
+```
+
+<!------------------------------------------------------------------------------>
+<!-- End Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Post-Script -->       
+<!------------------------------------------------------------------------------>
+
+<!-- Notes:        -->       
+
+<!-- Compilation Errors -->       
+
+<!-- Execution Errors -->
+
+<!-- Next Scripts to Consider -->
+
+<!------------------------------------------------------------------------------>
+

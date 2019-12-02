@@ -1,0 +1,268 @@
+---
+title: "Model Descriptions"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+---
+***
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+
+<!--  ####  Description   #### -->
+
+# Description:
+This script will outline the intended model fits contained within the "Modeling" folder.  It will provide the theoretical foundation for each model, including:
+
+* Parameters
+* Coeficients
+* Distributions, and distributional assumptions
+* Additional assumptions made while modeling
+
+Each model will have multiple sections.  Each sections will pertain to a separate model, or other distinction (e.g. alternative assumptions). 
+
+Nomenclature, and notation is outlined first, and this should be universally applicable across all models.
+
+***
+
+<!--  ####  Script Dependencies   #### -->
+
+<!--  Packages -->  
+
+<!--  Working Directory  -->
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/RBC/Modeling/ModelDescription"
+setwd(WD)
+```
+
+<!------------------------------------------------------------------------------>
+
+
+
+
+
+<!------------------------------------------------------------------------------>
+<!-- Begin Script -->       
+<!------------------------------------------------------------------------------>
+
+***
+
+# Nomenclature, Notation and Definitions
+
+## Models
+
+The following sections will represent the five models to be fit:
+
+1. Linear Model with Fixed Effect Intercept (LMwFEint)
+2. Linear Model with Fiexed Effect Slope (LMwFEslope)
+3. Linear Mixed Model with Random Intercept (LMMwREint)
+4. Linear Mixed Model with Random Slope (LMMwREslope)
+5. Generalized Estimating Equations (GEE)
+
+## Variable Sets
+\begin{align*}
+\Omega_{SEQ} &= \left \{SEQ_{p}: \ p=1, \ldots, 38354    \right \}\\
+&= \left \{ SEQ_{1}=``A1BG-AS1", \ SEQ_{2}= ``A1CF", \ \ldots, \  SEQ_{38353}=``SNOZ5", \ SEQ_{38354}=``SNOSNR66"  \right \}\\
+\\
+\Omega_{FLOW} &= \left \{ FLOW_{p}: \ p=1, \ldots, 19    \right \}\\
+&= \left \{ FLOW_{1}=``FSC.A", \ FLOW_{2}= ``FSC.W", \ \ldots, \  FLOW_{18}=``CD27", \ FLOW_{19}=``CD235a"  \right \}\\
+\\
+\Omega_{META} &= \left \{ META_{p}: \ p=1, \ldots, 14    \right \}\\
+&= \left \{ META_{1}=``measurement.name", \ \ldots, \ META_{19}=``Perc.Mt"  \right \}\\
+\end{align*}
+
+We choose:
+
+\begin{center}
+$p_{resp}^{seq} \in \Omega_{seq}$\\
+\vspace{5pt}
+and\\
+\vspace{5pt}
+$p_{resp}^{flow} \in \Omega_{flow}$\\
+\end{center}
+
+to model as response values, using the values:
+
+\begin{center}
+$p_{cov}^{seq} \in \Omega_{seq} \backslash \left \{p_{resp}^{seq}\right \}$\\
+\vspace{5pt}
+and\\
+\vspace{5pt}
+$p_{cov}^{flow} \in \Omega_{flow}\backslash \left \{p_{resp}^{flow}\right \}$\\
+\end{center}
+
+as covariates.
+
+We also let 
+
+* $i = 1, \ldots, N$ Represent subject
+* $j = 1, \ldots, n_{i}$ Represent measurement within subject
+* $v \in \left \{ seq, flow \right \}$
+
+***
+
+# Model 0: OLS Referrence Model
+
+$$\log \left [ \left( Y_{p_{resp}^{v}}\right)_{ij} \right ]  = \beta_{0} + \beta_{1} \log \left [ \left(X_{p_{cov}^{v}}\right)_{ij} \right ] + \epsilon_{ij} $$
+
+where 
+$$\epsilon_{ij} \sim N\left(\mathbf{0}, \sigma_{\epsilon}^{2} \mathbf{I}_{n_{i}}   \right) $$
+
+# Model 1: Linear Model with Fixed Effect Intercept (LMwFEint)
+
+$$\log \left [ \left( Y_{p_{resp}^{v}}\right)_{ij} \right ]  = \beta_{0} + \beta_{1i} \left( subject \right)_{i} +   \beta_{2} \log \left [ \left(X_{p_{cov}^{v}}\right)_{ij} \right ] + \epsilon_{ij} $$
+
+where 
+$$\epsilon_{ij} \sim N\left(\mathbf{0}, \sigma_{\epsilon}^{2} \mathbf{I}_{n_{i}}   \right) $$
+
+
+# Model 2: Linear Model with Fixed Effect Slope (LMwFEslope)
+
+$$\log \left [ \left( Y_{p_{resp}^{v}}\right)_{ij} \right ]  = \beta_{0} + \beta_{1i} \left( subject \right)_{i} +   \beta_{2i} \log \left [ \left(X_{p_{cov}^{v}}\right)_{ij} \right ] * \left(subject \right)_{i}  + \epsilon_{ij} $$
+
+again with:
+
+$$\epsilon_{ij} \sim N\left(\mathbf{0}, \sigma_{\epsilon}^{2} \mathbf{I}_{n_{i}}   \right) $$
+
+# Model 3: Linear Mixed Model with Random Intercept (LMMwREint)
+
+$$\log \left [ \left( Y_{p_{resp}^{v}}\right)_{ij} \right ]  = \beta_{0} + \beta_{1} \log \left [ \left(X_{p_{cov}^{v}}\right)_{ij} \right ] + b_{0i} \left(subject \right)_{i}  + \epsilon_{ij} $$
+
+where 
+
+$$b_{0i} \sim N\left(0 , \sigma_{b}^{2}    \right) $$
+
+$$\epsilon_{ij} \sim N\left(\mathbf{0}, \sigma_{\epsilon}^{2} \mathbf{I}_{n_{i}}   \right) $$
+
+
+
+# Model 4: Linear Mixed Model with Random Slope (LMMwREslope)
+
+
+\begin{align*}
+\log \left [ \left( Y_{p_{resp}^{v}}\right)_{ij} \right ]  &= \beta_{0} + \beta_{1} \log \left [ \left(X_{p_{cov}^{v}}\right)_{ij} \right ] +  \\
+&= b_{0i} \left(subject \right)_{i} + b_{1i}\log \left [ \left(X_{p_{cov}^{v}}\right)_{ij} \right ]*\left( subject \right)_{i}    + \epsilon_{ij} \\
+\end{align*}
+
+where 
+$$
+\mathbf{b} = 
+\begin{bmatrix}
+b_{0i} \\
+b_{1i} \\
+\end{bmatrix} 
+\sim N(\mathbf{0}, \mathbf{G})
+$$
+
+$$
+\mathbf{G}=
+\begin{bmatrix}
+\sigma_{b}^{2} & 0 \\
+0 & \sigma_{b}^{2} \\
+\end{bmatrix}
+$$
+
+
+
+$$\epsilon_{ij} \sim N\left(\mathbf{0}, \sigma_{\epsilon}^{2} \mathbf{I}_{n_{i}}   \right) $$
+
+
+# Model 5: Generalized Estimating Equations (GEE)
+
+The GEE fitting process is a semi-parametric method that uses intial estimates obtained from parametric methods of estimating Generalized Linear Models, to iteratively re-estimate parameters according to a working covariance matrix that appropriately models within-subject variability until a desired threshold of convergence is met.  
+
+Accordingly, the following criteria are needed to fully specify a GEE estimate:
+
+* An exponential family to specify error structure in initial conditions, with a similarly defined link function
+* A linear predictor to specify covariate information
+* A working covariance structure
+
+In the case of the model being fit here, we assume that:
+
+* For initial conditions: $Y_{ij} \sim N \left(\mu, \sigma^{2}\right)$ with link function $g(x)=x$
+* \textit{Alternate}--For initial conditions: $Y_{ij} \sim Poisson( \lambda)$ with link function $g(x)=log(x)$
+
+\newpage
+
+* We will use the linear predictor:
+
+$$\eta_{ij} = \beta_{0} + \beta_{1i} \left( subject \right)_{i} +   \beta_{2i} \log \left [ \left(X_{p_{cov}^{v}}\right)_{ij} \right ] * \left(subject \right)_{i} $$
+* We will be assuming that observations follow an independent covariance structure, which implies that:
+
+$$
+corr_{i}=R_{i}=
+\begin{bmatrix}
+1 & 0 & 0 & \cdots & 0 \\
+0 & 1 & 0 & \cdots & 0 \\
+0 & 0 & 1 & \cdots & 0 \\
+\vdots & \vdots &  \vdots & \ddots  & \vdots \\
+0 & 0 & 0 & \cdots & 1 \\
+\end{bmatrix}_{\left(n_{i} \ x \ n_{i} \right) }
+$$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!------------------------------------------------------------------------------>
+<!-- End Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Post-Script -->       
+<!------------------------------------------------------------------------------>
+
+<!-- Notes:        -->       
+
+<!-- Compilation Errors -->       
+
+<!-- Execution Errors -->
+
+<!-- Next Scripts to Consider -->
+
+<!------------------------------------------------------------------------------>
+

@@ -1,0 +1,184 @@
+---
+title: "Initial Data Summaries"
+author: "Lee Panter"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+---
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+***
+
+<!--  ####  Description   #### -->
+\begin{center}
+\LARGE{\underline{\textbf{Description}}}
+\end{center}
+
+This script will produce numerical and graphical summaries of relevant models considered in each of the model developed as described in the ReadMe.  
+
+***
+
+<!--  Packages -->  
+```{r, echo=FALSE}
+library(ggplot2)
+library(plyr)
+library(nlme)
+```
+
+
+<!--  Working Directory  -->       
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/RBC/Modeling/InitialDataSummaries"
+setwd(WD)
+```
+
+
+<!-- Data  &  Variables -->       
+```{r, echo=FALSE}
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/alldatFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/flowFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/indseqFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/mdataFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/seqFilter.RData")
+```
+***
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Begin Script -->       
+<!------------------------------------------------------------------------------>
+\begin{center}
+\LARGE{\underline{\textbf{Begin Script}}}
+\end{center}
+
+\vspace{10pt}
+
+```{r, echo=FALSE}
+index.malat1=which(rownames(seqFilter)=="MALAT1")
+index.cd19=which(rownames(seqFilter)=="CD19")
+mala=seqFilter[index.malat1,]
+cd19=seqFilter[index.cd19,]
+nFeature=mdataFilter$nFeature
+nCount=mdataFilter$nCount
+Perc.Mt=mdataFilter$Perc.Mt
+subject.no=mdataFilter$subject.no
+measurement=mdataFilter$measurement.name
+dat=data.frame(subject.no, measurement, Perc.Mt, nCount, nFeature, cd19, mala)
+```
+
+
+### Exploratory Data Analysis
+
+Following:
+
+* Histogram plots of Predictor and Outcome
+* Scatter Plot of Predictor v Outcome
+* Numerical five number summaries of Predictor and Outcome
+
+#### Predictor Summaries
+```{r}
+# FIVE NUMBER SUMMARY
+summary(dat$cd19)
+
+# HISTOGRAM
+p1=ggplot(dat, aes(x=cd19,fill=subject.no, color=subject.no))+
+  geom_histogram(alpha=0.5, position = "dodge", binwidth = 30)+
+  theme(legend.position = "right")
+p1
+```
+
+#### Outcome Summaries
+```{r}
+# FIVE NUMBER SUMMARY
+summary(dat$mala)
+
+# HISTOGRAM
+p2=ggplot(dat, aes(x=mala,fill=subject.no, color=subject.no))+
+  geom_histogram(alpha=0.5, position = "dodge", binwidth = 30)+
+  theme(legend.position = "right")
+p2
+```
+
+#### Scatter Plot Outcome ~ Predictor
+
+```{r}
+p3=ggplot(dat, aes(x=cd19, y=mala, color=subject.no))+
+  geom_point(alpha=0.5)
+p3
+```
+
+
+
+
+***
+
+# Transformed Variables (log transformations)
+
+We will apply the transformation $Y=log(x+1)$ to the outcome and response variables to create new-transformed variables.
+
+
+```{r}
+dat$logcd19=log(cd19+1, base = exp(1))
+dat$logmala=log(mala+1, base = exp(1))
+
+
+# FIVE NUMBER SUMMARY
+summary(dat$logcd19)
+
+# HISTOGRAM
+p1=ggplot(dat, aes(x=logcd19,fill=subject.no, color=subject.no))+
+  geom_histogram(alpha=0.5, position = "dodge", binwidth = 1)+
+  theme(legend.position = "right")
+p1
+
+# FIVE NUMBER SUMMARY
+summary(dat$logmala)
+
+# HISTOGRAM
+p1=ggplot(dat, aes(x=logmala,fill=subject.no, color=subject.no))+
+  geom_histogram(alpha=0.5, position = "dodge", binwidth = 1)+
+  theme(legend.position = "right")
+p1
+
+
+p3=ggplot(dat, aes(x=logcd19, y=logmala, color=subject.no))+
+  geom_point(alpha=0.5)
+p3
+```
+\begin{center}
+\LARGE{\underline{\textbf{End Script}}}
+\end{center}
+<!------------------------------------------------------------------------------>
+<!-- End Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Post-Script -->       
+<!------------------------------------------------------------------------------>
+
+<!-- Notes:        -->       
+
+<!-- Compilation Errors -->       
+
+<!-- Execution Errors -->
+
+<!-- Next Scripts to Consider -->
+
+<!------------------------------------------------------------------------------>
+
