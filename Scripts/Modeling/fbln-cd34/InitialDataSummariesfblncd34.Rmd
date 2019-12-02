@@ -1,0 +1,216 @@
+---
+title: "Initial Data Summaries"
+author: "Lee Panter"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+---
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+
+```{r}
+#### Set Working Directory
+WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/Scripts/Modeling/fbln-cd34"
+setwd(WD)
+
+
+### flowFilter
+load("/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/FilteredMergedData/Rdata/flowFilter.RData")
+
+#### mdataFilter
+load("/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/FilteredMergedData/Rdata/mdataFilter.RData")
+
+#### seqFilter
+load("/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/FilteredMergedData/Rdata/seqFilter.RData")
+```
+
+
+***
+
+<!--  ####  Description   #### -->
+\begin{center}
+\LARGE{\underline{\textbf{Description}}}
+\end{center}
+
+This script will produce numerical and graphical summaries of relevant models considered in each of the model developed as described in the ReadMe.  
+
+***
+
+
+<!--  Packages -->  
+```{r, echo=FALSE}
+library(ggplot2)
+library(plyr)
+library(nlme)
+```
+
+
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Begin Script -->       
+<!------------------------------------------------------------------------------>
+\begin{center}
+\LARGE{\underline{\textbf{Begin Script}}}
+\end{center}
+
+\vspace{10pt}
+
+
+```{r}
+index.fbln=which(rownames(seqFilter)=="FBLN1")
+index.cd34=which(rownames(seqFilter)=="CD34")
+fbln=seqFilter[index.fbln,]
+cd34=seqFilter[index.cd34,]
+nFeature=mdataFilter$nFeature
+nCount=mdataFilter$nCount
+Perc.Mt=mdataFilter$Perc.Mt
+subject.no=mdataFilter$subject.no
+measurement=mdataFilter$measurement.name
+dat=data.frame(subject.no, measurement, Perc.Mt, nCount, nFeature, cd34, fbln)
+```
+
+### Exploratory Data Analysis
+
+Following:
+
+* Histogram plots of Predictor and Outcome
+* Scatter Plot of Predictor v Outcome
+* Numerical five number summaries of Predictor and Outcome
+
+#### Predictor Summaries
+```{r}
+# FIVE NUMBER SUMMARY
+summary(dat$cd34)
+
+
+# HISTOGRAM
+p1=ggplot(dat, aes(x=cd34,fill=subject.no, color=subject.no))+
+  geom_histogram(alpha=0.5, position = "dodge", binwidth = 30)+
+  theme(legend.position = "right")
+p1
+```
+
+
+
+#### Outcome Summaries
+```{r}
+summary(dat$fbln)
+
+# HISTOGRAM
+p2=ggplot(dat, aes(x=fbln,fill=subject.no, color=subject.no))+
+  geom_histogram(alpha=0.5, position = "dodge", binwidth = 30)+
+  theme(legend.position = "right")
+p2
+```
+
+
+#### Scatter Plot Outcome ~ Predictor
+
+```{r}
+p3=ggplot(dat, aes(x=cd34, y=fbln, color=subject.no))+
+  geom_point(alpha=0.5)
+p3
+```
+
+
+
+
+
+***
+
+# Transformed Variables (log transformations)
+
+We will apply the transformation $Y=log(x+1)$ to the outcome and response variables to create new-transformed variables.
+
+
+```{r}
+dat$logcd34=log(cd34+1, base = exp(1))
+dat$logfbln=log(fbln+1, base = exp(1))
+
+
+# FIVE NUMBER SUMMARY
+summary(dat$logcd34)
+
+# HISTOGRAM
+p1=ggplot(dat, aes(x=logcd34,fill=subject.no, color=subject.no))+
+  geom_histogram(alpha=0.5, position = "dodge", binwidth = 1)+
+  theme(legend.position = "right")
+p1
+
+# FIVE NUMBER SUMMARY
+summary(dat$logfbln)
+
+# HISTOGRAM
+p1=ggplot(dat, aes(x=logfbln,fill=subject.no, color=subject.no))+
+  geom_histogram(alpha=0.5, position = "dodge", binwidth = 1)+
+  theme(legend.position = "right")
+p1
+
+
+p3=ggplot(dat, aes(x=logcd34, y=logfbln, color=subject.no))+
+  geom_point(alpha=0.5)
+p3
+```
+\begin{center}
+\LARGE{\underline{\textbf{End Script}}}
+\end{center}
+<!------------------------------------------------------------------------------>
+<!-- End Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Post-Script -->       
+<!------------------------------------------------------------------------------>
+
+<!-- Notes:        -->       
+
+<!-- Compilation Errors -->       
+
+<!-- Execution Errors -->
+
+<!-- Next Scripts to Consider -->
+
+<!------------------------------------------------------------------------------>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

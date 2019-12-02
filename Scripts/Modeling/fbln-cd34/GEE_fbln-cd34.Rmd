@@ -1,0 +1,186 @@
+---
+title: "Generalized Estimating Equations"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+---
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+***
+
+<!--  ####  Description   #### -->
+\begin{center}
+\LARGE{\underline{\textbf{Description}}}
+\end{center}
+
+This script will produce, and analyze a linear model fit using General Estimating equations.  The script will assume a Poisson distribution with log-link to obtain initial estimates of $\beta$.  
+
+***
+
+<!--  ####  Script Dependencies   #### -->
+```{r, echo=FALSE}
+library(ggplot2)
+library(plyr)
+library(nlme)
+library(geepack)
+library(forcats)
+```
+
+
+<!--  Working Directory  -->       
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/Scripts/Modeling/fbln-cd34"
+setwd(WD)
+```
+
+
+<!-- Data  &  Variables -->       
+```{r, echo=FALSE}
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/alldatFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/flowFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/indseqFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/mdataFilter.RData")
+load(file="/Users/lee/Documents/Lee/School/CU Denver/MS_Project/Data:Scripts/FinalData/InitialModels/InterceptOnly/seqFilter.RData")
+```
+***
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Begin Script -->       
+<!------------------------------------------------------------------------------>
+```{r, echo=FALSE}
+index.fbln=which(rownames(seqFilter)=="FBLN1")
+index.cd34=which(rownames(seqFilter)=="CD34")
+fbln=seqFilter[index.fbln,]
+cd34=seqFilter[index.cd34,]
+nFeature=mdataFilter$nFeature
+nCount=mdataFilter$nCount
+Perc.Mt=mdataFilter$Perc.Mt
+subject.no=mdataFilter$subject.no
+measurement=mdataFilter$measurement.name
+dat=data.frame(subject.no, measurement, Perc.Mt, nCount, nFeature, cd34, fbln)
+IDgee=dat$subject.no
+IDgee=as.factor(IDgee)
+IDgee=fct_drop(IDgee)
+dat$subject.no=IDgee
+dat=groupedData(fbln~cd34|subject.no)
+
+logcd34=log(cd34+1, base = exp(1))
+logfbln=log(fbln+1, base = exp(1))
+logdat=data.frame(logcd34, logfbln, subject.no)
+logdat=groupedData(logfbln~logcd34|subject.no)
+```
+
+\vspace{10pt}
+
+# Non-Transformed Model
+
+```{r}
+GEEmod=geeglm(fbln~ cd34,
+              family = "gaussian",
+              id=IDgee,
+              data = dat,
+              corstr = "independence")
+print(summary(GEEmod))
+print(anova(GEEmod))
+
+plot(fbln~cd34, data=dat, main="Model v Orignal Data")
+abline(a=coefficients(GEEmod)[1], b=coefficients(GEEmod)[2], col="RED", lwd=4)
+
+# Mean Intercept
+print(coefficients(GEEmod)[1])
+
+# Mean Slope
+print(coefficients(GEEmod)[2])
+
+dat$fit=fitted(GEEmod)
+dat$res=residuals(GEEmod)
+
+p=ggplot(dat, aes(x=fit, y=res, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  ggtitle("Fitted Vs Residual")+
+  xlab("Fitted Value")+
+  ylab("Residual Value")
+p
+
+
+q=ggplot(dat, aes(sample = res))+
+  stat_qq()+
+  stat_qq_line()
+q
+```
+
+# Transformed Model
+
+```{r}
+logGEEmod=geeglm(logfbln~ logcd34,
+              family = "gaussian",
+              id=IDgee,
+              data = logdat,
+              corstr = "independence")
+print(summary(logGEEmod))
+print(anova(logGEEmod))
+
+plot(logfbln~logcd34, data=logdat, main="Model v Orignal Data")
+abline(a=coefficients(logGEEmod)[1], b=coefficients(logGEEmod)[2], 
+       col="RED", lwd=4)
+
+# Mean Intercept
+print(coefficients(logGEEmod)[1])
+
+# Mean Slope
+print(coefficients(logGEEmod)[2])
+
+logdat$fit=fitted(logGEEmod)
+logdat$res=residuals(logGEEmod)
+
+p=ggplot(logdat, aes(x=fit, y=res, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  ggtitle("Fitted Vs Residual")+
+  xlab("Fitted Value")+
+  ylab("Residual Value")
+p
+
+
+q=ggplot(logdat, aes(sample = res))+
+  stat_qq()+
+  stat_qq_line()
+q
+```
+
+<!------------------------------------------------------------------------------>
+<!-- End Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Post-Script -->       
+<!------------------------------------------------------------------------------>
+
+<!-- Notes:        -->       
+
+<!-- Compilation Errors -->       
+
+<!-- Execution Errors -->
+
+<!-- Next Scripts to Consider -->
+
+<!------------------------------------------------------------------------------>
+

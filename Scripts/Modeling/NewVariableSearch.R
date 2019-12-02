@@ -92,20 +92,18 @@ logmala
 
 
 # FBLN1 (fbln) ~ CD34
+seqFilterT=data.frame(t(seqFilter))
 index.cd34=which(colnames(seqFilterT)=="CD34")
 cd34=seqFilterT[, index.cd34]
 subject.no=mdataFilter$subject.no
 
-hist(cd34)
-
 sample.vector1=1:6223
-sample.vector2=6225:15463
-sample.vector3=15466:16990
-sample.vector4=17117:38354
+sample.vector2=6225:10000
+sample.vector3=11000:15463
+sample.vector4=15466:16990
+sample.vector5=17117:38354
 
 sample.vector=c(sample.vector1, sample.vector2, sample.vector3, sample.vector4)
-index.sample=sample(sample.vector, length(), replace = FALSE)
-index.sample=sort(index.sample)
 
 
 plotlist=list()
@@ -146,9 +144,12 @@ for(i in 1:length(sample.vector)){
 j=which.max(quant.vec)
 colnames(seqFilterT)[index.sample[j]]
 
-plot(seqFilterT$FBLN1~seqFilterT$CD34)
+plot(seqFilterT$FBLN2~seqFilterT$CD34)
 
+colnames(seqFilterT)[116]
 
-
-
+for(i in 1:150)
+{
+  plot(seqFilterT[,i]~seqFilterT$CD34, main=i)
+}
 
