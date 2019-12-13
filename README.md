@@ -11,12 +11,12 @@
   * Denver, CO 80210
 
 ## Disclaimer:
-The information contained in this repository, including all documents, code, code-output and data are (and never were) intended for publishing for public record under the designation as original intellectual property of the named author.
+The information contained in this repository, including all documents, code, code-output and data are not (and never were) intended for publishing for public record under the designation as original intellectual property of the named author.
 
 
 ## Contents:
 
-### Folders
+### Important Directory Discriptions
 
 * Data:
   * all relevant data files used in the project
@@ -26,11 +26,12 @@ The information contained in this repository, including all documents, code, cod
   * Papers that should be referenced, orininal source material, and additional information sources used throughout the project
 * Presentation:
   * PDF formats of Slides presented at various times throughout the course of the semester
-* Scripts: See Below
+* Scripts
+  * Distinct method subdirectories corresponding to the method by which a model was fit, or summary folders (data or model summary)
 * Timelines:
-  * Idealized goals for the project, originally organized when the project was just beginning
+  * Goals for the project, originally organized when the project was just beginning
 
-### Futher Information (not finished):
+### Directories
 * /Data
   * /InitialData
   * /PostFilterData
@@ -42,6 +43,7 @@ The information contained in this repository, including all documents, code, cod
   * /MetaDataCalculations
   * /CompatabilityReadMe
   * /SeuratQC
+  * /ResultSummaries
   * /Modeling
     * /GEE
     * /Initial Data Summaries
@@ -51,3 +53,11 @@ The information contained in this repository, including all documents, code, cod
     * /LMwFEint
     * /ModelDescriptions
     * /ModelSummaries
+* /FinalizedWriteUps
+  * /WriteUpOutline
+* /LiteratureReview
+  * /Applied Longitudinal Data Analysis
+* /Presentations
+  * /SpeedTalk
+  * /StatGen
+* /Timelines
