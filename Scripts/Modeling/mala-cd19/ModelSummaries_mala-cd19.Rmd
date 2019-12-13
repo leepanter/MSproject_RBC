@@ -67,7 +67,7 @@ Note: ** These are Wald test of a single parameter (not t-tests)
 Model Number & Estimate & Std. Error & t-Stat & p-Value  \\
 \hline
 \hline
-M0 (lmod0) & 0.7132 & 1.5426  & 0.462 & <2e-16 \\
+M0 (lmod0) & 0.7132 & 1.5426  & 0.462 & 0.644 \\
 \hline
 M1 (LMwFEint) & 2.562 & 1.501  & 1.707 & 0.0881 \\
 \hline

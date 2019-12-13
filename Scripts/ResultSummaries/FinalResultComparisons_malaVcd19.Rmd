@@ -1,0 +1,232 @@
+---
+title: "Final Result Comparisons MALAT1 vs CD19"
+author: "Lee Panter"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+bibliography: BibdotBib.bib
+---
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE,echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+***
+
+<!--  ####  Description   #### -->
+\begin{center}
+\LARGE{\underline{\textbf{Description}}}
+\end{center}
+
+This script will compile all relevant data and model summary information for the MALAT1 ~ CD19 pairings.  
+
+***
+
+<!--  ####  Script Dependencies   #### -->
+\begin{center}
+\LARGE{\underline{\textbf{Script Dependencies}}}
+\end{center}
+
+
+<!--  Packages -->  
+## Package Dependencies
+
+```{r}
+library(ggplot2)
+library(plyr)
+library(nlme)
+```
+
+
+<!--  Working Directory  -->       
+## SetWorking Directory & Seed
+
+```{r}
+WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/Scripts/ResultSummaries"
+setwd(WD)
+set.seed(123)
+```
+
+
+
+<!-- Data  &  Variables -->       
+
+***
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Begin Script -->       
+<!------------------------------------------------------------------------------>
+\begin{center}
+\LARGE{\underline{\textbf{Percent Change Matrices}}}
+\end{center}
+
+```{r, echo=FALSE}
+perct.change=function(old, new){
+  out=(new-old)/old
+  return(out)
+}
+
+perct.change.matrix=function(vectin){
+  l=length(vectin)
+  mat.out=matrix(NA, nrow=l, ncol=l)
+  for(i in 1:l){
+    for(j in 1:l){
+      mat.out[i,j]=perct.change(vectin[i], vectin[j])
+    }
+  }
+  return(mat.out)  
+}
+
+
+int.estimate=c((7.8294)*10^(3),
+               (10.1125)*10^(3),
+               (9.559)*10^(3),
+               (7.3994)*10^(3),
+               (7.4050)*10^(3),
+               (7.8294)*10^(3))
+
+
+int.se=c((2.348)*10^(2),
+         (8.4495)*10^(2), 
+         (8.956)*10^(2),
+         (7.6899)*10^(2),
+         (7.677)*10^(2),
+         (9.8883)*10^(2))
+
+
+
+slope.estimate=c(0.7132,
+                   2.562,
+                   (1.765)*10^(1),
+                   2.495,
+                   2.168,
+                   0.7132)
+
+
+slope.se=c(1.5426,
+           1.501,
+           8.246,
+           1.491,
+           1.797,
+           2.5028)
+
+
+log.int.estimate=c(8.46182,
+                   7.54861,
+                   6.97932,
+                   8.41374,
+                   8.39722,
+                   8.4618)
+
+
+log.int.se=c(0.04568,
+             0.12291,
+             0.13896,
+             0.11825,
+             0.13957,
+             0.1842)
+
+
+log.slope.estimate=c(0.04918,
+                     0.04833,
+                     0.51428,
+                     0.04920,
+                     0.05938,
+                     0.0492)
+
+log.slope.se=c(0.01455,
+               0.01381,
+               0.06017,
+               0.01374,
+               0.03538,
+               0.0397)
+```
+
+# Untransformed Percent Change Matrices
+
+## Intercept 
+
+### Estimate
+```{r}
+round(perct.change.matrix(int.estimate), 3)
+```
+
+### Standard Error
+```{r}
+round(perct.change.matrix(int.se), 3)
+```
+
+## Slope
+
+### Estimate
+```{r}
+round(perct.change.matrix(slope.estimate), 3)
+```
+
+### Standard Error
+```{r}
+round(perct.change.matrix(slope.se), 3)
+```
+
+\newpage
+
+# Log-Transformed Models
+
+## Intercept 
+
+### Estimate
+```{r}
+round(perct.change.matrix(log.int.estimate), 3)
+```
+
+### Standard Error
+```{r}
+round(perct.change.matrix(log.int.se), 3)
+```
+
+## Slope
+
+### Estimate
+```{r}
+round(perct.change.matrix(log.slope.estimate), 3)
+```
+
+\newpage
+
+### Standard Error
+```{r}
+round(perct.change.matrix(log.slope.se), 3)
+```
+
+
+<!------------------------------------------------------------------------------>
+<!-- End Script -->       
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+<!-- Post-Script -->       
+<!------------------------------------------------------------------------------>
+
+<!-- Notes:        -->       
+
+<!-- Compilation Errors -->       
+
+<!-- Execution Errors -->
+
+<!-- Next Scripts to Consider -->
+
+<!------------------------------------------------------------------------------>
+

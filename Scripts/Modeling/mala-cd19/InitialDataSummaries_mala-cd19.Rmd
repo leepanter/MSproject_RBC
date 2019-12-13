@@ -96,10 +96,12 @@ Following:
 summary(dat$cd19)
 
 # HISTOGRAM
-p1=ggplot(dat, aes(x=cd19,fill=subject.no, color=subject.no))+
-  geom_histogram(alpha=0.5, position = "dodge", binwidth = 30)+
-  theme(legend.position = "right")
-p1
+# p1=ggplot(dat, aes(x=cd19,fill=subject.no, color=subject.no))+
+#   geom_histogram(alpha=0.5, position = "dodge", binwidth = 30)+
+#   theme(legend.position = "right")
+# p1
+
+hist(cd19, xlab = "cd19", breaks= 100 )
 ```
 
 #### Outcome Summaries
@@ -108,10 +110,12 @@ p1
 summary(dat$mala)
 
 # HISTOGRAM
-p2=ggplot(dat, aes(x=mala,fill=subject.no, color=subject.no))+
-  geom_histogram(alpha=0.5, position = "dodge", binwidth = 30)+
-  theme(legend.position = "right")
-p2
+# p2=ggplot(dat, aes(x=mala,fill=subject.no, color=subject.no))+
+#   geom_histogram(alpha=0.5, position = "dodge", binwidth = 30)+
+#   theme(legend.position = "right")
+# p2
+
+hist(mala, xlab = "MALAT1", breaks = 100)
 ```
 
 #### Scatter Plot Outcome ~ Predictor
@@ -135,26 +139,30 @@ We will apply the transformation $Y=log(x+1)$ to the outcome and response variab
 ```{r}
 dat$logcd19=log(cd19+1, base = exp(1))
 dat$logmala=log(mala+1, base = exp(1))
-
+logcd19=dat$logcd19
+logmala=dat$logmala
 
 # FIVE NUMBER SUMMARY
 summary(dat$logcd19)
 
 # HISTOGRAM
-p1=ggplot(dat, aes(x=logcd19,fill=subject.no, color=subject.no))+
-  geom_histogram(alpha=0.5, position = "dodge", binwidth = 1)+
-  theme(legend.position = "right")
-p1
+# p1=ggplot(dat, aes(x=logcd19,fill=subject.no, color=subject.no))+
+#   geom_histogram(alpha=0.5, position = "dodge", binwidth = 1)+
+#   theme(legend.position = "right")
+# p1
+
+hist(logcd19, xlab = "logcd19", breaks = 100)
 
 # FIVE NUMBER SUMMARY
 summary(dat$logmala)
 
 # HISTOGRAM
-p1=ggplot(dat, aes(x=logmala,fill=subject.no, color=subject.no))+
-  geom_histogram(alpha=0.5, position = "dodge", binwidth = 1)+
-  theme(legend.position = "right")
-p1
+# p1=ggplot(dat, aes(x=logmala,fill=subject.no, color=subject.no))+
+#   geom_histogram(alpha=0.5, position = "dodge", binwidth = 1)+
+#   theme(legend.position = "right")
+# p1
 
+hist(logmala, xlab = "logmala", breaks = 100)
 
 p3=ggplot(dat, aes(x=logcd19, y=logmala, color=subject.no))+
   geom_point(alpha=0.5)
