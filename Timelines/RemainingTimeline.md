@@ -11,10 +11,10 @@
   * Final draft submission for approval
   * As needed:
     * Revision submissions to Advisory Committee
-    * Submission of intital drafts to Advisory Committee
+    * Submission of intital draft to Advisory Committee
     * Revision submissions to Dr. Hendricks
-    * Submission of initial drafts to Dr. Hendricks
-* Provide details regarding each checkpoint's submission
+    * Submission of initial draft to Dr. Hendricks
+* Provide details regarding submission at each checkpoint
 * Keep track of alterations in timeline
 
 
@@ -48,6 +48,6 @@ I have created a Google Calendar which will reflect all changes, live.  If you w
 ## Notes:
 
 * The deadlines above allow for:
-  * Six revision - feedback opportunities for Dr. Hendricks
-  * Three revision - feedback opportunities for the Advisory Committee
-* The dates and recurrences of deadlines above have been chosen arbitrarily and are completely flexible.
+  * Six revisions & feedback opportunities for Dr. Hendricks
+  * Three revisions & feedback opportunities for the Advisory Committee
+* The dates and recurrences of deadlines above have been chosen arbitrarily and are completely flexible. (With exception to Intial Submission and Revision Submission 1, which have already been scheduled)
