@@ -31,10 +31,8 @@ knitr::opts_chunk$set(echo=FALSE,
   * Oral Exam
   * Final draft submission for approval
   * As needed:
-    * Revision submissions to Advisory Committee
-    * Submission of intital draft to Advisory Committee
-    * Revision submissions to Dr. Hendricks
-    * Submission of initial draft to Dr. Hendricks
+    * Revision submissions
+    * Initial content submissions
 * Provide details regarding submission at each checkpoint
 * Keep track of alterations in timeline
 
@@ -43,35 +41,96 @@ knitr::opts_chunk$set(echo=FALSE,
 I have created a Google Calendar which will reflect all changes, live.  If you wish to subscibe: [Google Calendar-LPanterMSProject](https://calendar.google.com/calendar?cid=aHZiOHI1cmEwcGd2MmI0aWk3ZnNsNG1vaGNAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ)
 
 
-## Submission Deadlines
+## Submission Deadlines and Meetings
 
-* Inital Submission - Dr. Hendricks - Thursday, January 2nd, 2020
-  * Initial submission.  To include: Introduction, Methods, Motivating Example, Implementation
-* Revision Submission 1 - Dr. Hendricks - Tuesday, January 7th, 2020
-  * Make recommended alterations from Initial submission (1/2/2020) and re-submit (to Dr. Hendricks).
-  * Additional sections: Abstract, Discussion
-* Revision Submission 2 - Dr. Hendricks - Tuesday, January 14th, 2020
-  * Make recommended alterations from Revision Submission 1 (1/7/2020) and re-submit (to Dr. Hendricks).
-* Initial Submission - Advisory Committee - Tuesday, January 21st, 2020
-  * Make recommended alterations from Revision Submission 2 (1/14/2020) and submit to Advisory Committee
-* Revision Submission 3 - Advisory Committee - Tuesday, January 28th, 2020
-  * Make recommended alterations from Initial Advisory Committee Submission (1/21/2020) and re-submit to Advisory Committee
-* Revision Submission 4 - Advisory Committee - Tuesday, February 4th, 2020
-  * Make recommended alterations from Revision Submission 3 (1/28/2020) and re-submit to Advisory Committee
-* Final Submission
-  * Make recommended alterations from Revision Submission 4 (2/4/2020)
-  * Final Submission: Tuesday, February 18th, 2020
-* Oral Prepatory Work
-  * Wednesday, February 5th, 2020 - Monday, February 24th, 2020
-  * Oral Exam: Tuesday, February 25th, 2020
+* __v1__ - Inital Submission __(1/2/2019)__
+  * Thursday, January 2nd, 2020
+  * To include: Introduction, Methods, Motivating Example, Implementation
+  * Version 1 (v1)
+  * Sub-versions (small corrections, minor updates: v1.1, v1.2 - if needed)
+
+* Post v1 meeting  __(1/7/2020)__
+  * Tuesday, January 7th, 2020
+  * Discuss additional sections: Abstract, Discussion
+  * Intital feedback: (Feedback: v1)
+  * *NOTE: the date of this meeting does not allow for 7 days of review time*
+
+* v1 Feedback __1/2/2020 - 1/9/2020__
+
+
+
+* __v2__ - Initial Submission (with Additional Sections) __(1/14/2020)__  
+  * Tuesday, January 14th, 2020 
+  * Make recommended alterations from v1 Feedback 
+  * Initial submission of additional sections 
+  * Version (v2)
+
+* v2 Feedback __1/14/2020 - 1/21/2020__
+
+* *Post v2 meeting* 
+  * Not scheduled, and if advisable
+  * Ideal Date Range: __1/21/2020 - 1/24/2020__
+
+
+
+* __v3__ - Revision Submission __(1/28/2020)__  
+  * Tuesday, January 28th, 2020 
+  * Make recommended alterations from v2 Feedback 
+  * Version (v3)
+
+* v3 Feedback __1/28/2020 - 2/4/2020__
+
+* *Post v3 meeting* 
+  * Not scheduled, and if advisable
+  * Ideal Date Range: __2/4/2020 - 2/7/2020__
+
+
+
+* __Final Submission (2/11/2020)__  
+  * Tuesday, February 11th, 2020 
+  * Make recommended alterations from v3 Feedback 
+  * Submission to Advisory Committee
+
+
+
+* __Ov1__ Initial Oral Presentation Submission __(2/18/2020)__ 
+  
+* *Ov1 Content Review Meeting*
+  * Not scheduled, and if advisable
+  * Ideal Date Range: __2/18/2020 - 2/21/2020__ 
+  
+  
+  
+* __Ov2__ Revised Oral Presentation Submission __(2/25/2020)__
+  * Make recommended alterations from Ov1 Meeting
+  
+* *Ov2 Review Meeting*
+  * Not scheduled, and if advisable
+  * Ideal Date Range: __2/25/2020 - 2/28/2020__ 
+  * Content Review and Practice Presentation 
+
+
+* __Ov3__ Revised Oral Presentation Submission __(3/3/2020)__
+  * Make recommended alterations from Ov3 Meeting
+  
+* *Ov3 Review Meeting*
+  * Not scheduled, and if advisable
+  * Ideal Date Range: __3/3/2020 - 3/6/2020__ 
+  * Practice Presentation (content review if needed)
+
+
+* __Final Oral Presentation (3/10/2020) __
+  * Tuesday, March 10th, 2020
+  * Make recommended alterations from Ov3 Meeting
+
 
 
 ## Notes:
 
 * The deadlines above allow for:
-  * Six revisions & feedback opportunities for Dr. Hendricks
-  * Three revisions & feedback opportunities for the Advisory Committee
-* The dates and recurrences of deadlines above have been chosen arbitrarily and are completely flexible. (With exception to Intial Submission and Revision Submission 1, which have already been scheduled)
+  * Three revision opportunities (two opportunities for additional sections: Discussion and Abstract)
+  * Three Oral Presentation feedback opportunities (at least two chances for content review and at least two chances for presentation practice - if advisable)
+* The dates and recurrences of deadlines above have been chosen arbitrarily and are completely flexible. (With exception to v1 - Intial Submission and Post v1 meeting, which have already been scheduled)
 
 <!------------------------------------------------------------------------------>
 <!-- End Script -->       
