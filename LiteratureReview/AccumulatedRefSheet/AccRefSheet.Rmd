@@ -1,0 +1,86 @@
+---
+title: "Accumulated Referrence Sheet"
+output: 
+  pdf_document:
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=0.5in
+fontsize: 11pt
+bibliography: Bib_AccRefSheet.bib
+csl: mathematical-biosciences-and-engineering.csl
+---
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+
+
+# References 
+
+[@fitzmaurice2012applied] -- fitzmaurice2012applied
+
+[@satija2018seurat] -- satija2018seurat
+
+[@arazi2018immune] -- arazi2018immune
+
+[@saadatpour2015single] -- saadatpour2015single
+
+[@wang2017visualization] -- wang2017visualization
+
+[@crowell2019discovery] -- crowell2019discovery
+
+[@kharchenko2014bayesian] -- kharchenko2014bayesian
+
+[@chan2008statistical] -- chan2008statistical
+
+[@stuart2019comprehensive] -- stuart2019comprehensive
+
+[@adan2017flow] -- adan2017flow
+
+[@bates2014fitting] -- bates2014fitting
+
+[@spitzer2016mass] -- spitzer2016mass
+
+[@bendall2014single] -- bendall2014single
+
+[@wang2015advances] -- wang2015advances
+
+[@sandberg2014entering] -- sandberg2014entering
+
+[@van2019rna] -- van2019rna
+
+[@eberwine2014promise] -- eberwine2014promise
+
+[@wagner2018use] -- wagner2018use
+
+[@finak2013mixture] -- finak2013mixture
+
+[@bacher2016design] -- bacher2016design
+
+[@tung2017batch] -- tung2017batch
+
+[@boedigheimer2008mixture] -- boedigheimer2008mixture
+
+[@macaulay2014single] -- macaulay2014single
+
+[@staahlberg2010defining] -- staahlberg2010defining
+
+[@amir2013visne] -- amir2013visne
+
+[@xue2013genetic] -- xue2013genetic
+
+[@marco2014bifurcation] -- marco2014bifurcation
+
+***
+***
+
+\bibliography{Bib_AccRefSheet}
