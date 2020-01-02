@@ -3,11 +3,11 @@ title: "Comparing Models of Subject-Clustered Single-Cell Data"
 author: "Lee Panter"
 csl: mathematical-biosciences-and-engineering.csl
 output:
+  word_document: default
   pdf_document:
     df_print: kable
     includes:
       in_header: Rmarkdown_preamble.tex
-  word_document: default
 geometry: margin=1.0in
 fontsize: 12pt
 subtitle: v1
@@ -28,33 +28,470 @@ knitr::opts_chunk$set(echo=FALSE,
 
 # Abstract 
 
-Single-cell RNA sequencing (scRNA-seq) represents a revolutionary shift to the analytic approaches being used to decode the human transcriptome. Single-cell data has been used to: visualize cellular subpopulations with unsupervised clustering methods, test for differential expression rates across conditions using logistic and mixture modeling, and reconstruct spatio-temporal relationships using network analysis.  While these successes demonstrate the utility and promise for single-cell methods, they do not demonstrate the practical need to generalize to single-cell data over multiple individuals.  This paper looks to compare three different modeling strategies for RNA-seq expression estimation for data with individual-level clusting.  The modeling approaches will be compared theoretically against an Ordinary Least Squares model, and analytically motivated by data from a Lupus Nephritis study.  It is hoped that this paper will present new approaches to modeling single-cell expression data, and will be useful not only for Statisticians, but also Geneticists and Microbiologists.    
+Single-cell RNA sequencing (scRNA-seq) represents a revolutionary shift to the analytic approaches being used to decode the human transcriptome. Single-cell data has been used to: visualize cellular subpopulations with unsupervised clustering methods, test for differential expression rates across conditions using logistic and mixture modeling, and reconstruct spatio-temporal relationships using network analysis.  While these successes demonstrate the utility and promise for single-cell methods, they do not demonstrate the practical need to generalize to single-cell data over multiple individuals.  This paper looks to compare three different modeling strategies for RNA-seq expression estimation in data with individual-level clusting.  The modeling approaches will be compared theoretically against an Ordinary Least Squares model, and analytically motivated by data from a Lupus Nephritis study.  It is hoped that this paper will present new approaches to modeling single-cell expression data, and will be useful not only for Statisticians, but also Geneticists and Microbiologists.    
 
 
 # Introduction
 
-Single-cell analysis has emerged as a leading methodology for the analysis of transcriptomic data. [@macaulay2014single] Such data sets have demonstrated their utility in research contexts for identifying rare subpopulations, characterizing genes that are differentially expressed across considtions, and in spatio-temporal inference. [@bacher2016design]  Additionally, advances in whole genome amplification and cellular isolation techniques have made single-cell data sets more accessible and informative than ever before. [@macaulay2014single]          
+Single-cell analysis has emerged as a leading methodology for transcriptome analytics. [@macaulay2014single] Single-cell data sets (i.e. data involving measurements with single-cell resolution) have demonstrated their utility in research contexts for identifying rare subpopulations, characterizing genes that are differentially expressed across conditions, and infering spatio-temporal relationships within the microbiome. [@bacher2016design]  Additionally, advances in whole genome amplification and cellular isolation techniques have made single-cell data sets more accessible, more informative, and more diverse than ever before. [@macaulay2014single]          
 
 
-Traditional methods for analylizing single-cell data for subpopulations commonly involve unsupervised clustering techniques including Principle Components Analysis (PCA) and K-nearest neighbors (KNN).  These methods have been shown to be effective in identifying rare nerological cells within a homogeneous population. [@staahlberg2010defining].  Such clustering methods, and additional (non-linear) methods such as the t-distributed stochastic neighborhood embedding (t-SNE) are also useful for visualizing high-dimensional data and have been used to find multi-dimensional boundary values for distinguishing heathly and cancerous bone marrow samples. [@amir2013visne]  While both these studies involve single-cell data which incorperates multiple subjects, the modeling methodologies do not provide estimates for subject-factor effects.
+Traditional methods for subpopulation exploration within single-cell data commonly involve unsupervised clustering techniques including Principle Components Analysis (PCA) and K-nearest neighbors (KNN).  These methods have been shown to be effective in identifying rare nerological cells within a homogeneous population. [@staahlberg2010defining]  Such clustering methods, and additional (non-linear) methods such as the t-distributed stochastic neighborhood embedding (t-SNE) are also useful for visualizing high-dimensional data and have been used to find multi-dimensional boundary values for distinguishing heathly and cancerous bone marrow samples. [@amir2013visne]  While all these studies involve single-cell data that incorperates multiple subjects, the modeling methodologies do not provide estimates for subject-factor effects.
 
 
-Single-cell data has been used to target treatments by characterizing differential expression across condition.  Model-based Analysis of Single-cell Transcriptomics (MAST) has been used to compare "primary human non-stimulated" and "cytokine-activated" mucosal-associated invariant T-cells. [@wang2009rna]  Single-Cell Differential Expression (SCDE) was also used to compare 92 mouse embryonic fibroblasts with 92 embryonic stem cells. [@kharchenko2014bayesian]  Neither of these studies included sampling across multiple subjects, and the resulting models do not account for possible correlation within subjects that might be present.   
+Single-cell data has been used to target treatments by characterizing differential expression across condition.  Model-based Analysis of Single-cell Transcriptomics (MAST) has been used to compare "primary human non-stimulated" and "cytokine-activated" mucosal-associated invariant T-cells. [@wang2009rna]  Additionally, Single-Cell Differential Expression (SCDE) was used to compare 92 mouse embryonic fibroblasts to 92 embryonic stem cells. [@kharchenko2014bayesian]  Neither of these studies included samples across multiple subjects, and the resulting models do not account for possible correlation within subjects that might be present.   
 
 
-Network modeling approaches, in conjunction with single-cell data have provided the opportunity to learn about cellular heirarchies, spatial relationships, and temporal progressions.  Weighted Gene Co-Expression Network Analysis (WGCNA) has been used to find delineations in both human and mouse embryonic transcriptome dynamics during progression from oocyte to morula.  [@xue2013genetic]  A similar analysis was performed using Single-cell Clustering Using Bifurcation Analysis (SCUBA), and was verified using Reverse Transcription Polymerase Chain Reaction (RT-PCR) data over the same single-cell measurements. [@marco2014bifurcation]  The studies conducted using network modeling approaches targets single-cell sources at multiple time points or with distinct measures that could be compared using a pseudo-time metric.  Diversification of the single-cell data by incorperating multiple subjects is not considered or adressed.  
+Network modeling approaches, in conjunction with single-cell data have provided the opportunity to learn about cellular heirarchies, spatial relationships, and temporal progressions within the microbiome.  Weighted Gene Co-Expression Network Analysis (WGCNA) has been used to find delineations in both human and mouse embryonic transcriptome dynamics during progression from oocyte to morula.  [@xue2013genetic]  A similar analysis was performed using Single-cell Clustering Using Bifurcation Analysis (SCUBA), and was verified using Reverse Transcription Polymerase Chain Reaction (RT-PCR) data over the same single-cell measurements. [@marco2014bifurcation]  The studies conducted using network modeling approaches targets single-cell sources at multiple time points, or distinct measures that could be compared using a pseudo-time metric.  Diversification of the single-cell data by incorperating multiple subjects is not considered or adressed.  
 
 
-Down-stream analyses of single-cell data can be a very useful tool for transcriptome analytics.  Technological advances in cellular isolation and genetic material amplification will lead to a rise in single-cell data prevalence, and a corresponding rise in the prevalence of multiple-subject single-cell data sets.  Therefore, there is a clear need to develope, test and integrate alternative methods that can accurately and precisely model single-cell data and account for the correlation of repeated measures within subject samples.  
+Down-stream analyses of single-cell data can be a very useful tool for transcriptome analytics.  Technological advances in cellular isolation and genetic material amplification will likely lead to a rise in single-cell data prevalence, and a corresponding rise in the prevalence of multiple-subject single-cell data sets.  Therefore, there is a clear need to develope, test, and integrate alternative methods that can accurately and precisely model single-cell data and account for the correlation of repeated measures within subject samples.  
 
 
-This paper seeks to satisfy this need by proposing ______ methods for modeling scRNA-seq expression profiles that account for within-subject correlation differently. A motivating example consisting of scRNA-seq observations across multiple subjects with Lupus Neprhitis will be detailed. We will provide the model theory and comparisons in the context of this example.  Results of the various modeling approaches will be compared and any conclusions discussed along with implications and future research following the discussion.  
+This paper seeks to satisfy this need by suggesting three methods for modeling scRNA-seq expression profiles that account for within-subject correlation differently. We provide a motivating example consisting of scRNA-seq observations across multiple subjects with Lupus Neprhitis will. Modeling theory and comparisons will be provided in the context of this example and the results of the various modeling approaches will be compared. We will discuss relevant conclusions, implications, limitations and future research to illustrate our findings.  
+
+
+# Description of Motivating Example
+
+Throughout the course of this paper, references will be made to "The immune cell landscape in kidneys with lupus nephritis patients" [@arazi2018immune].  This paper originally references single-cell data collected as part of a cross-sectional case-control study of 24 Lupus Nephritis (LN) cases and ten control (LD) subjects.  Samples of kidney tissue and urine from LN subjects were taken from ten clinical sites across the United States, LD subject samples were obtained at a single site from a living kidney donor, after removal and prior to implantation in the recipient.  No LD urine samples were collected.  Samples were crygenically frozen and shiped to a central processing facility where they were thawed, dissociated, and sorted into single-cell suspension across 384-well plates using FlowJo 10.0.7 11-color flow cytomery [@flowjov10].  sc-RNA sequencing was performed using a modified CEL-Seq2 method [@hashimshony2016cel], followed by $\sim$ 1 million paired-end reads per cell. Data can be accessed through the ImmPort repository with accession code SDY997.
+
+
+The Seurat Guided Clustering Tutorial [@satija2018seurat] was used to examine intial data and perform quality control (QC) filtering.  The Seurat package allows for easy classification of low-quality observations by setting threshold values for:
+
+1. the number of unique genes detected in each cell (nFeature), and
+2. the percentage of reads that map to the mitochondrial genome (perctMT)
+
+Item (1) can be useful for identifying empty or broke-cell measures (indicated by abnormally low gene detection numbers) and duplicate/multiplicate cells measures (indicated by abnormally high gene detection numbers).  Item (2) can help to identify dead and/or broken cells since these cells will retain RNAs in mitochondria, but lose cytoplasmic RNA [@bacher2016design]. Original QC measures employed within the Seurat Package by (Arazi A, Rao DA, Berthier CC, et al.) required:
+
+1. $1,000 < nFeature < 5,000$
+2. $perctMT \leq 25 \%$
+
+However, after inspecting the impact that the QC filters made on the $perctMT$ distribution (Figure 1)
+
+\begin{figure}[!h]
+\centering
+		\includegraphics[width=0.85\textwidth]{2020-01-01_18-56-53.jpeg}
+\end{figure}
+
+a decision to increase the $perctMT$ threshold to 60% was made to preserve the inherent distribution structure across subjects (Figure 2)
+
+\begin{figure}[!h]
+\centering
+		\includegraphics[width=0.85\textwidth]{2020-01-01_19-13-18.jpeg}
+\end{figure}
+
+After application of quality control filters, we are left with 1,110 scRNA-seq observations of 38,354 genetic variables distributed across 15 subjects (originally 27 subjects in data, 12 removed due to poor quality data).  There are a minimum of 21 and a maximum of 127 observations per subject, with a mean of 74 and a median of 79 observations per subject.  
+
+In order to simplify the analysis and make more significant insights into model comparisons, we have decided to choose two pairs of variables from the 38,354 genetic markers to model in a predictor-response relationship.  The variables chosen indicated higher values of correlation than arbitrary pairings, and could be associate with important outcomes of interest (e.g. cancer treatment research in the case of MALAT1 [@gutschner2013malat1], or observed limb malformations in the case of FBLN1 variation [@debeer2002fibulin]).  An attempt was also made to choose predictor-pairings of interest. The CD19 marker (paired with MALAT1) is a transmembrane protein, encoded by a the CD19 gene.  Since the FlowJo cytometry measurement contain CD19 readings, the relationship between a proteomic predictor, or a transcriptomic predictor and an outcome of interest could be modeled simmultanneously.  CD34, the predictor which we will link with FBLN1 is also a transmembrane protein encoded by a gene, and similarly interesting.         
+
+
+Single-cell RNA sequencing data is represented as non-negative integer count data. The observations are specific to much finer genomes (i.e. single-cell resolution), so while the overall scope of gene expression is the same as a traditional bulk experiment, individual observations have a biologically inflated zero-component.  Additionally, there are technical zero-inflation components that are associated with protocol variations.  Together, these factors contribute to heavily righ-skewed variables (Figure 3)      
+
+\newpage
+
+\begin{figure}[h!]
+\centering
+		\includegraphics[width=0.85\textwidth]{Untranslated.jpg}
+\end{figure}
+
+We therefore perform a log-tranform on the predictors and response variables, in an attempt to achieve normality. Figure 4 displays the log transformations given by:
+$$X \mapsto \log \left(X+1\right) $$
+
+\begin{figure}[h!]
+\centering
+		\includegraphics[width=0.85\textwidth]{Transformed.jpg}
+\end{figure}
+
+We can see that the log-transformed response for the MALAT1 ~ CD19 pairing has resulted in an acceptably normal distribution for the response MALAT1.  Since the methods we will employ in this paper are only concerned with residual error normality it suffices to have approximately normal response variables (i.e. predictor variable distributions may be reasonably non-normal provided that appropriate residual analysis is performed).
+
+Conversely, the log-transformed response for the FBLN1 ~ CD34 pairing is not inherently better than the un-transformed response.  We can clearly see the heavy influence of zero-inflation in these variables. Even though this is an alarming result, we will continue to model the FBLN ~ CD34 relationship.    
+
+
+# Model Parameters
+The data we acquired from (Arazi A, Rao DA, Berthier CC, et al) allows us to fully define variables and parameters and outline each model clearly.
+
+
+We define our outcome(s) of interest to be one of the following transformed variables:
+$$\text{Response-h} \ =  \ R_{h} \ = \ \log\left(Y_h + 1\right) \quad \text{for} \quad  h = 1, 2$$
+where
+$$Y_{1}=\text{MALAT1} \quad \text{and} \quad Y_{2}=\text{FBLN1}$$
+We aslo define the predictor attached to $R_{k}$ 
+$$\text{Predictor-h} \ =  \ P_{h} \ = \log\left(X_{h} +1 \right) \quad \text{for} \quad h=1,2 $$
+where
+$$X_{1}=\text{CD19} \quad \text{and} \quad Y_{2}=\text{CD34}$$
+
+
+Let a single response be designated as: $R_{hij}$. The index $i=1, \ldots, 15$ represents the subject from which the observation originated, and the index $j=1, \ldots, n_{i}$ represents the repeated observation number within subject-i.  We note that $n_{i} \in \left \{21, 22, 23, \ldots, 127   \right \}$ in the context of the Lupus Nephritis Data.
+
+Additionally, the models presented theoretically here (with exception to Model 0) are "Less Than Full Rank" (LTFR) representations of the models for which results will be presented.  The Full Rank model results presented create full-rank matrices by droping the first level in all factors, and using this as the referrence level.  
+
+
+# Linear Regression
+We begin the process of comparing models for scRNA-seq expression profiles in Lupus Nephritis subject-clustered tissue data, by describing three linear regression models, with parameters estimated using Least Squares optimizations.  
+
+
+It should be noted that these methods make the assumption that observations are independent, but can account for some observational correlation with the use of subject specific intercept and slope terms.  
+
+Ultimately, all these methods assume an identical error structure between all subjects of the form:
+$$\epsilon_{hij}\sim N\left(0, \sigma_{\epsilon}^{2} * I_{1110}  \right) $$
+
+where we are assuming that $\sigma^{2}$ is a fixed variance parameter for all subjects and $I_{1110}$ is the 1110 X 1110 identity matrix.
+
+
+## Simple Linear Regression (Model 0)
+
+Using the notation we defined above, we can write the first model as:
+$$R_{hij}=\beta_{0} + \beta_{1} P_{hij} + \epsilon_{hij}$$
+which is equivalent to:
+$$\log(Y_{hij})=\beta_{0} + \beta_{1} \log(X_{hij}) + \epsilon_{hij}$$
+
+## Fixed-Effect Subject-Intercept (Model 1)
+
+Adding a subject-specific intercept term, allows us to account for within-subject correlation by strengthening the relationship between fitted values specific to a subject.  This model may be written as:
+
+$$R_{hij} = \beta_{0} + \beta_{1i}(subject_{i})+\beta_{2} P_{hij} + \epsilon_{hij}$$
+
+where the term: 
+$$
+\beta_{1i}\left(subject_{i} \right)=
+\begin{cases}
+\beta_{1i} & \mbox{if} \quad subject_{i}=i\\
+0 & \mbox{if} \quad subject_{i} \neq i\\
+\end{cases}
+$$
+
+## Fixed-Effect Subject-Slope (Model 2)
+
+We may further account for within-subject correlation by adding a term which will ensure that individual subjects' relationships with the covariate of interest is accounted for.  This will help to reduce within-subject variation across the predictor space, and will be more noticable for stronger, subject-specific interactions with covariates.
+
+This model may be written as:
+
+$$R_{hij} = \beta_{0} + \beta_{1i}\left(subject_{i} \right) +
+\left [ \beta_{2i}\left(subject_{i} \right)*P_{hij} \right ]+ \beta_{3} P_{hij} + \epsilon_{hij}$$
+
+where we are using the same definitions of $\left(subject_{i} \right)$, $R_{hij}$, and $P_{hij}$ as in Models 0 and 1. 
+
+
+
+# Motivated Results-Linear Regression 
+
+The Linear Regressions described in the previous section(s) were each fit in R to the data from the motivating example (Arazi A, Rao DA, Berthier CC, et al) [@arazi2018immune]. Estimates for the main intercept ($\beta_{0}$), and the main-effect slope ($\beta_{1}$ in Model 0, $\beta_{2}$ in Model 1, $\beta_{3}$ in Model 2) along with the estimated standard errors, test-statistics, and p-values are displayed in (table 1) and (table 2) for the MALAT1 ~ CD19 relationship and in (table 3) and (table 4) for the FBLN1 ~ CD34 relationship.
+
+## Intercept Estimates (MALAT1 ~ CD19)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-Value \\
+\hline
+\hline
+Model 0  & 8.4618 & 4.568e-2 &  1.8526e+2 & < 2e-16 \\
+\hline
+Model 1  & 7.5486 & 1.2261e-1 & 6.1564e+1 & < 2e-16 \\
+\hline
+Model 2  & 6.9793 & 1.3896e-1 & 5.0226e+1 & < 2e-16 \\
+\hline
+\end{tabular}
+
+Table 1
+\end{center}
+
+
+
+### Main-Effect Slope (MALAT1 ~ CD19)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-value \\
+\hline
+\hline
+Model 0 &  4.918e-2 &  1.455e-2  & 3.381 &  7.47e-4\\
+\hline
+Model 1 &  4.833e-2 &  1.381e-2 & 3.500 &  4.84e-4\\
+\hline
+Model 2 &  5.143e-1 &  6.017e-2 &  8.546 & < 2e-16 \\
+\hline
+\end{tabular}
+
+Table 2
+\end{center}
 
 
 
 
+### Intercept Estimates (FBLN1 ~ CD34)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-Value \\
+\hline
+\hline
+Model 0  & 3.510e-1 & 2.45e-2 & 1.43e+1 & < 2e-16 \\
+\hline
+Model 1  & 2.7572 & 6.52e-2 & 4.23e+1 & < 2e-16 \\
+\hline
+Model 2  & 2.7973 & 7.68e-2 & 3.643e+1 & < 2e-16 \\
+\hline
+\end{tabular}
+
+
+Table 3
+\end{center}
+
+
+### Main-effect Slope Estimates (FBLN1 ~ CD34)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-value \\
+\hline
+\hline
+Model 0  & 7.884e-1 & 4.92e-2  & 1.6e+1 & < 2e-16 \\
+\hline
+Model 1  & 1.306e-1 & 3.42e-2  & 3.82 & 1.4e-4 \\
+\hline
+Model 2  & 8.38e-2 & 5.89e-2  &  1.42 & 1.5492e-1 \\
+\hline
+\end{tabular}
+
+Table 4
+\end{center}
+
+
+We note that in each of the relationships being modeled, we see an decrease in the standard error associated with the main-effect slope as we incorperate subject-specific information regarding the intercept (i.e. compare model 0 to model 1). Conversely, we see an increase in the standard error associated with the main-effect slope as we incorperate subject-specific information about the slope.  
+
+Model diagnostics including plots of model fit, residual vs fitted value plots, and quantile-quantile residual distribution plots are included as part of the appendix material. *A discussion of modeling assumptions will also be included __(wondering if this needs to be addressed)__*
+
+
+# Linear Mixed Models
+
+The next category of approaches to modeling scRNA-seq expression profiles in Lupus Nephritis subject-clustered data we will describe is two distinct Linear Mixed Models.  These modeling methods account for subject-clustering differently than the previously discussed Linear Regression models.  Linear Mixed Models do not neccessarily assume observational independence, and they can even systematically account for correlation among repeated measures within a subject.  Additionally, if we can rationally assume that the responses shown in Figure 3 have a multivariate distribution, the model parameters can be easily estimated using Maximum Likelihood Estimation techniques [@fitzmaurice2012applied].   
+
+## Linear Mixed Model with Random Intercept (Model 3)
+
+Model 1 accounted for subject-clustering by assuming that observations within a subject were ubiquitously and uniformly influenced by the nested nature (observations within subjects) of the sampling method.  However, this assumption is not always be reasonable, as we would expect that responses within each subject would exhibit random variation. 
+
+A Linear Mixed Effects Model that includes a Random Intercept accounts for observational correlation due to subject-clustering by assuming that observations within a subject are a consequence of the nested nature of the sampling method, and therefore a consequence of an additive (covariate-independent), subject-specific, effect; AND due to subject-specific random variation in response measurement associated with measurement instatbility for THAT subject.   
+
+This model may be written as:
+
+$$R_{hij} = \beta_{0} + \beta_{1} P_{hij} + b_{0i}\left(subject_{i}\right) + \epsilon_{hij}$$
+where
+$$b_{0i} \sim N\left(0, \sigma_{b}^{2} \right)$$
+$$\epsilon_{hij} \sim N\left(0, \sigma_{\epsilon}^{2} I_{n_{i}} \right) $$
+and we assume that $b_{0i}$ and $\epsilon_{hij}$ are independent.
+
+We note that both random-component can be assumed to have a mean of zero because these components are inherently deterministic and can be integrated into the $\beta_{0}$ intercept term.  
+
+
+## Linear Mixed Effect Model with Random Slope (Model 4)
+
+Model 2 implemented a Fixed Effect slope in an attempt to reconcile the effects of observational clustering inadequately accounted for by the Fixed Effect Intercept in Model 1.  However, in light of the information surrounding the development of Model 3, it is incumbent for us to develop an analogous correction for Model 2.  Such a correction would allow us to account for observational correlation due to subeject-clustering as sourced from:
+
+- additive, subject-specific effects due to clustered sampling methods
+- subject-specific random variation associated with measurement instability
+- covariate-scaling, subject-specific effects
+- covariate-scaling, subject-specific random variation associated with measurement instability 
+
+We write this model as:
+
+$$R_{hij} = \beta_{0} + \beta_{1} P_{hij} + b_{0i}\left(subject_{i}\right) + \left [ b_{1i}\left(subject_{i} \right) P_{hij}   \right ] + \epsilon_{hij}$$
+
+where
+
+$$\mathbf{b} = 
+\begin{bmatrix}
+b_{0i} \\
+b_{1i}
+\end{bmatrix} \sim 
+N \left(\mathbf{0}, \mathbf{G} \right)$$
+
+$$G=\begin{bmatrix}
+\sigma_{b}^2 & 0 \\
+0 & \sigma_{b}^{2}\\
+\end{bmatrix}$$
+
+$$\epsilon_{hij} \sim N\left(\mathbf{0}, \sigma_{\epsilon}^{2}\mathbf{I}_{n_{i}} \right) $$
+
+
+# Motivated Results-Linear Mixed Models
+
+The tables displayed  (5 - 8) are analogous to Tables (1 - 4) for Model 3 and Model 4.
+
+## Intercept Estimates (MALAT1 ~ CD19)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-Value \\
+\hline
+\hline
+Model 3 & 8.4137 &  1.1825e-1 &  7.1151e+1 & < 2e-16 \\
+\hline
+Model 4 & 8.3972 &  1.3957e-1 &  6.0166e+1 & <2e-16 \\
+\hline
+\end{tabular}
+
+Table 5
+\end{center}
+
+
+
+### Main-Effect Slope (MALAT1 ~ CD19)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-value \\
+\hline
+\hline
+Model 3 &  4.920e-2 &  1.374e-2 & 3.579  &  3.6e-4 \\
+\hline
+Model 4  & 5.938e-2 &  3.538e-2  & 1.678 &  1.19e-1 \\
+\hline
+\end{tabular}
+
+Table 6
+\end{center}
+
+
+
+
+### Intercept Estimates (FBLN1 ~ CD34)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-Value \\
+\hline
+\hline
+Model 3 & 6.53e-1 & 2.22e-1 & 2.94 & 1.1e-2 \\
+\hline
+Model 4 & 6.491e-1 & 2.223e-1 & 2.92 & 1.1e-2 \\
+\hline
+\end{tabular}
+
+Table 7
+\end{center}
+
+
+### Main-effect Slope Estimates (FBLN1 ~ CD34)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-value \\
+\hline
+\hline
+Model 3 & 1.35e-1 & 3.42e-2  & 3.95 & 8.4e-5 \\
+\hline
+Model 4 & 1.705e-1  & 7.29e-2 & 2.34  & 6.7e-2 \\
+\hline
+\end{tabular}
+
+Table 8
+\end{center}
+
+Again, we note that in each of the relationships being modeled,  we see an increase in the standard error associated with the main-effect slope as we incorperate subject-specific
+information about the slope.
+
+
+Model diagnostics including plots of model fit, residual vs fitted value plots, and quantile - quantile residual distribution plots are included as part of the appendix material. *A discussion of modeling assumptions will also be included __(wondering if this needs to be addressed)__* 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!------------------------------------------------------------------------------>
+\newpage
+# Appendix
+
+### Linear Regression Model Diagnostic Plots
+
+This section will contain plots of:
+
+- Model vs Original data
+- Fitted vs Original data
+- Quantile - Quantile distributions of the model residuals.
+
+
+### Linear Mixed Model Diagnostic Plots
+
+This section will contain plots of:
+
+- Model vs Original data
+- Fitted vs Original data
+- Quantile - Quantile distributions of the model residuals.
+
+
+
+<!------------------------------------------------------------------------------>
 \newpage
 
 # References
 
 \bibliography{Bib_AccRefSheet}
+
+<!------------------------------------------------------------------------------>
