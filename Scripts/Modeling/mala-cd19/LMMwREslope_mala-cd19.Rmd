@@ -188,6 +188,7 @@ dat$res=residuals(logLMMwREslope)
 p=ggplot(dat, aes(x=fit, y=res, color=subject.no))+
   geom_point()+
   geom_hline(yintercept = 0)+
+  theme(legend.position = "none")+
   ggtitle("Fitted Vs Residual")+
   xlab("Fitted Value")+
   ylab("Residual Value")
@@ -197,6 +198,8 @@ q=ggplot(dat, aes(sample = res))+
   stat_qq()+
   stat_qq_line()
 q
+
+grid.arrange(p,q,nrow=2)
 ```
 <!------------------------------------------------------------------------------>
 <!-- End Script -->       

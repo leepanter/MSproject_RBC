@@ -39,6 +39,7 @@ This script will produce, and analyze a linear model with a fixed-effect subject
 library(ggplot2)
 library(plyr)
 library(nlme)
+library(gridExtra)
 ```
 
 
@@ -113,6 +114,38 @@ loglmod0=lm(logfbln~logcd34, dat)
 (loglmod0s=summary(loglmod0))
 plot(loglmod0)
 ```
+```{r}
+modelplot=ggplot(dat, aes(x=logcd34, y=logfbln, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  geom_abline(intercept = coefficients(loglmod0)[1], slope = coefficients(loglmod0)[2], color="BLUE")+
+  ggtitle("Original Data vs Model")+
+  xlab("log(CD34)")+
+  ylab("log(FBLN1)")
+modelplot
+
+dat$resid=resid(loglmod0)
+dat$fitted=fitted.values(loglmod0)
+
+residplot=ggplot(dat, aes(x=fitted, y=resid, color=subject.no))+
+  geom_point()+
+  geom_hline(yintercept = 0)+
+  ggtitle("Fitted vs Residual Values")+
+  xlab("Fitted Value")+
+  ylab("Residual Value")+
+  theme(legend.position = "none")
+residplot
+
+qqplot=ggplot(dat, aes(sample = resid))+
+  stat_qq()+
+  stat_qq_line()+
+  ggtitle("qqPlot of Residuals")
+qqplot
+
+diagplots=grid.arrange(residplot, qqplot, nrow=2)
+```
+
+
 
 ```{r}
 p=ggplot(dat, aes(x=logcd34, y=logfbln, color=subject.no))+
@@ -188,6 +221,7 @@ p=ggplot(dat, aes(x=fitted, y=resid, color=subject.no))+
   geom_hline(yintercept = 0)+
   ggtitle("Fitted Vs Residual")+
   xlab("Fitted Value")+
+  theme(legend.position = "none")+
   ylab("Residual Value")
 p
 
@@ -195,6 +229,9 @@ q=ggplot(dat, aes(sample = resid))+
   stat_qq()+
   stat_qq_line()
 q
+
+grid.arrange(p,q, nrow=2)
+
 ```
 
 <!------------------------------------------------------------------------------>

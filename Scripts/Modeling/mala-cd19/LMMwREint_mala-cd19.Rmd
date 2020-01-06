@@ -171,6 +171,7 @@ p=ggplot(dat, aes(x=fit, y=res, color=subject.no))+
   geom_point()+
   geom_hline(yintercept = 0)+
   ggtitle("Fitted Vs Residual")+
+  theme(legend.position = "none")+
   xlab("Fitted Value")+
   ylab("Residual Value")
 p
@@ -179,6 +180,8 @@ q=ggplot(dat, aes(sample = res))+
   stat_qq()+
   stat_qq_line()
 q
+
+grid.arrange(p,q,nrow=2)
 ```
 
 <!------------------------------------------------------------------------------>

@@ -136,22 +136,25 @@ logLMwFEslope=lm(logfbln~subject.no + subject.no:logcd34 + logcd34 , data = dat)
 print(summary(logLMwFEslope))
 print(AIC(logLMwFEslope))
 
-# coefInt=rep(coefficients(logLMwFEslope)[1], times=15)
-# coefSlp=rep(coefficients(logLMwFEslope)[16], times=15)
-# 
-# coef.int=coefficients(logLMwFEslope)[2:15]
-# coef.int=c(0,coef.int)
-# 
-# coef.slopes=coefficients(logLMwFEslope)[17:30]
-# coef.slopes=c(0,coef.slopes)
-# 
-# coefInt=coefInt+coef.int
-# coefSlp=coefSlp+coef.slopes
-# 
-# plot(logfbln~logcd34, data=dat, main="Model v Orignal Data")
-# for(i in 1:15){
-#   abline(a=coefInt[i], b=coefSlp[i], col=(20+i), lty=2, lwd=2)
-# }
+coefInt=rep(coefficients(logLMwFEslope)[1], times=15)
+coefSlp=rep(coefficients(logLMwFEslope)[16], times=15)
+
+coef.int=coefficients(logLMwFEslope)[2:15]
+coef.int=c(0,coef.int)
+
+coef.slopes=coefficients(logLMwFEslope)[17:30]
+coef.slopes=c(0,coef.slopes)
+
+coefInt=coefInt+coef.int
+coefSlp=coefSlp+coef.slopes
+
+plot(logfbln~logcd34, data=dat, main="Model v Orignal Data")
+for(i in 1:15){
+  xA.temp=is.na(coefInt[i])
+  xB.temp=is.na(coefSlp[i])
+  if(!xA.temp & !xB.temp)
+  {abline(a=coefInt[i], b=coefSlp[i], col=(20+i), lty=2, lwd=2)}
+}
 
 dat$fit=fitted(logLMwFEslope)
 dat$res=residuals(logLMwFEslope)
@@ -161,6 +164,7 @@ p=ggplot(dat, aes(x=fit, y=res, color=subject.no))+
   geom_hline(yintercept = 0)+
   ggtitle("Fitted Vs Residual")+
   xlab("Fitted Value")+
+  theme(legend.position = "none")+
   ylab("Residual Value")
 p
 
@@ -170,6 +174,7 @@ q=ggplot(dat, aes(sample = res))+
   stat_qq_line()
 q
 
+grid.arrange(p,q,nrow=2)
 ```
 
 <!------------------------------------------------------------------------------>
