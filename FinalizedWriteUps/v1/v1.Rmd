@@ -414,23 +414,150 @@ Model diagnostics including plots of model fit, residual vs fitted value plots, 
 
 
 
-# Generalized Estimating Equations
+# Generalized Estimating Equations (Model 5)
 
-Our final method for modeling the scRNA-seq expression profiles is Generalized Estimating Equations (GEE).  Dissimilar to each of the methods previously described, GEE incorperates incorperates information about observational clustering 
+Our final method for modeling scRNA-seq expression profiles is Generalized Estimating Equations (GEE).  Dissimilar to each of the methods previously described, GEE regression coefficient esitimates are obtained using methodologies that allow for non-continuous responses. GEE extrapolates on the techniques used for estimating Generalized Linear Models by incorperating the effects of observational correlation and clustering. 
+
+The choice of GEE to model scRNA-seq expression profiles in subject-clustered data is a natural continuation to the progression of methods chosen for comparison in this paper becuase it represents a third, distinct approach to accomodating observational clustering across subjects.
+
+Specifically, GEE estimates are computed by solving the estimating equation(s):
+\begin{equation}
+0=U(\mathbf{\beta})=\sum_{i=1}^{15} \left \{\mathbf{D}_{hi}^{T}\mathbf{V}_{hi}^{-1}\left(\mathbf{y}_{hi} - \mathbf{\mu}_{hi} \right)   \right \}\end{equation}
+where:
+$$\mathbf{\mu}_{hi} = \mathbf{\mu}_{hi} (\beta) = E\left [\mathbf{Y}_{hi} \right ]=\mathbf{\eta}_{hi}$$
+represents the relationship between the expected value of the response $\mathbf{\mu}_{i}$ (not necessarily assumed to be related to a distribution) and the linear predictor $\mathbf{\eta}_{i}$, 
+
+$$\mathbf{D}_{hi}=
+\begin{bmatrix}
+\frac{\partial \mu_{hi1}}{\beta_{1}} & \frac{\partial \mu_{hi1}}{\beta_{2}} & \cdots & \frac{\partial \mu_{hi1}}{\beta_{p}}\\
+\frac{\partial \mu_{hi2}}{\beta_{1}} & \frac{\partial \mu_{hi2}}{\beta_{2}} & \cdots & \frac{\partial \mu_{hi2}}{\beta_{p}}\\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial \mu_{hin_{i}}}{\beta_{1}} & \frac{\partial \mu_{hin_{i}}}{\beta_{2}} & \cdots & \frac{\partial \mu_{hin_{i}}}{\beta_{p}}\\
+\end{bmatrix}$$
+
+is the first derivative matrix, and
+
+$$\mathbf{V}_{hi}=\mathbf{A}_{hi}^{\frac{1}{2}}Corr(\mathbf{Y_{hi}})\mathbf{A}_{hi}^{\frac{1}{2}}$$
+$$\mathbf{A}_{hi} = \underset{n_{i}}{diag} \left \{ \phi_{j}\left(t_{ij} \right) \nu\left(\mu_{hij}\right)\right \}$$
+We note that $\phi_{j}\left(t_{ij}\right)$ and $\nu\left(\mu_{hij}\right)$ are hyperparameters defined so that we may know the variance as a function of the mean and a scale parameter, i.e:
+$$Var\left(Y_{hij}\right)=\phi_{j}\left(t_{ij} \right) \nu\left(\mu_{hij}\right)$$
+The GEE algorithm is iterative and used the following steps to converge at an estimate:
+
+1. Generalized Linear Modeling methods employing Maximum Likelihood Estimation are used to obtain intial estimates for $\mathbf{\beta}$
+2. Estimates for $\mathbf{\beta}$ used to compute hyper-parameters
+3. New estimates for hyper-parameters and working covariance matrix ($\mathbf{V}_{hi}$) used to obtain new estimates for $\mathbf{\beta}$ by solving (1)
+4. Repeat Steps 2 & 3 until algorithm converges
+
+The GEE algorithm has a quality which makes it very appealing for many applications with observational clustering.  Specifically, the algorithm is robust to misspecification of the observational correlation structure.  That is, the estimates $\hat{\mathbf{\beta}}_{GEE}$ are consistent with $\mathbf{\beta}$ irrespective of the estimates for within-subject correlation.
+
+The stability of the GEE algorithm is in-part due to the effects that it estimates.  Whereas each of the previous methods (Model 0 withstanding) had subject-specific interpretations, the GEE algorithm provides marginal parameter estimates.  These values do not represent any specific subject, but rather the population-average.
+
+According to (Fitzmaurice GM, Laird NM, Ware JH (2012)) [@fitzmaurice2012applied] we also need to ensure that any responses modeled in the GEE process are stationary, i.e:
+
+$$E\left [ Y_{hij} | \mathbf{X}_{hi} \right ]=E\left [ Y_{hij} | X_{hi1}, \ldots, X_{hin_{i}}\right ]=E\left [ Y_{hij} | X_{hij}\right ]$$
+The scRNA-seq data has been assumed to be independent within-subject, therefore we have:
+
+$$E\left [Y_{hij} | X_{hij}\right ] = E\left [Y_{hij} | X_{hij'}\right ]$$
+$$\forall j \in \left \{  1, \ldots, n_{i}\right \}  \quad j\neq j'$$
+
+Since the use of the scRNA-seq data would not violate the GEE assumptions, we proceed with the description of the model that we will fit.
+
+The three-part specification includes:
+
+1. The link function and linear predictor
+2. Variance function
+3. A working covariance matrix 
+
+The link function and linear predictor are chosen so that the resulting model estimates will be comparable to preceeding estimates for intercept and slope. Therefore, we will use the identity link function in conjunction with the linear predictor:
+$$g(x)=x$$
+$$g(\mu_{hij})=\eta_{hij} = \beta_{0} + \beta_{1}P_{hij}$$
+which implies we will be assuming the general modeling structure:
+$$E\left [Y_{hij} \right ]=\mu_{hij}=\eta_{hij}= \beta_{0} + \beta_{1}P_{hij}$$
+In the abscence of further information, we will assume a variance function of the form:
+$$Var\left(Y_{hij} \right) = \phi $$
+and we will be using a working covariance matrix structure for repeated measures that corresponds to the assumption of independence of observations within a subject.
+$$\left [ Corr\left(Y_{hij}, Y_{hik}\right)\right ]_{jk}=
+\begin{cases}
+1 \quad &\mbox{if} \quad j=k \\
+0 \quad &\mbox{if} \quad j \neq k \\
+\end{cases}$$
+$$for \quad j,k \in \left \{  1, \ldots, n_{i}   \right \}$$
 
 
 
 
 
+# Motivated Results - Generalized Estimating Equations
+
+## Intercept Estimates (MALAT1 ~ CD19)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-Value \\
+\hline
+\hline
+Model 5 & 8.4618 & 1.842e-1 & 2.1098e+3** & <2e-16** \\
+\hline
+\end{tabular}
+
+Table 9
+\end{center}
+Note: ** These are Wald test of a single parameter (not t-tests)
+
+
+
+### Main-Effect Slope (MALAT1 ~ CD19)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-value \\
+\hline
+\hline
+Model 5 & 4.92e-2 & 3.97e-1 & 1.53** & 2.2e-1** \\
+\hline
+\end{tabular}
+
+Table 10
+\end{center}
+Note: ** These are Wald test of a single parameter (not t-tests)
 
 
 
 
+### Intercept Estimates (FBLN1 ~ CD34)
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-Value \\
+\hline
+\hline
+Model 5 & 3.51e-1 & 1.25e-1 & 7.85** & 5.09e-3** \\
+\hline
+\end{tabular}
+
+Table 11
+\end{center}
+Note: ** These are Wald test of a single parameter (not t-tests)
 
 
+### Main-effect Slope Estimates (FBLN1 ~ CD34)
 
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & Estimate & Std. Error & t-Stat & p-value \\
+\hline
+\hline
+Model 5 & 7.88e-1 &  2.2e-1  & 1.281e+1** & 3.4e-4** \\
+\hline
+\end{tabular}
 
-
+Table 12
+\end{center}
+Note: ** These are Wald test of a single parameter (not t-tests)
 
 
 
@@ -504,13 +631,11 @@ This section will contain plots of:
   \caption{MALAT1 -- CD19: Diagnostic Plots}
 \end{figure}
 
-
 \begin{figure}[!hbt]
   \centering
   \includegraphics[width=0.85\textwidth]{2020-01-05_22-12-27.jpeg}
   \caption{FBLN1 -- CD34: Model v Original Data}
 \end{figure}
-
 
 \begin{figure}[!hbt]
   \centering
@@ -521,6 +646,8 @@ This section will contain plots of:
 \FloatBarrier
 
 \newpage
+
+\clearpage
 
 #### Model 1
 
@@ -595,14 +722,6 @@ This section will contain plots of:
 
 \FloatBarrier
 
-This section will contain plots of:
-
-- Model vs Original data
-- Fitted vs Original data
-- Quantile - Quantile distributions of the model residuals.
-
-
-\FloatBarrier
 
 #### Model 3
 
@@ -672,8 +791,57 @@ This section will contain plots of:
 
 \clearpage
 
+
+### Generalized Estimating Equations
+
+\FloatBarrier
+
+
+#### Model 5
+
+\FloatBarrier
+
+\begin{figure}[!hbt]
+  \centering
+  \includegraphics[width=0.85\textwidth]{2020-01-07_04-52-41.jpeg}
+  \caption{MALAT1 -- CD19: Model v Original Data}
+\end{figure}
+
+\begin{figure}[!hbt]
+  \centering
+  \includegraphics[width=0.85\textwidth]{2020-01-07_04-53-56.jpeg}
+  \caption{MALAT1 -- CD19: Diagnostic Plots}
+\end{figure}
+
+\begin{figure}[!hbt]
+  \centering
+  \includegraphics[width=0.85\textwidth]{2020-01-07_04-57-07.jpeg}
+  \caption{FBLN1 -- CD34: Model v Original Data}
+\end{figure}
+
+\begin{figure}[!hbt]
+  \centering
+  \includegraphics[width=0.85\textwidth]{2020-01-07_04-57-51.jpeg}
+  \caption{FBLN1 -- CD34: Diagnostic Plots}
+\end{figure}
+
+\FloatBarrier
+
+# Code and Data
+
+All code for the above analysis was written and evaluated in RStudio Version 1.2.1335, and is available for download at the following GitHub repository: 
+
+https://github.com/leepanter/MSproject_RBC.git
+
+Additionally, a link to all necessarry and referrence data files (including original data) are contained in the following Google Drive:
+
+https://drive.google.com/open?id=1gjHaMJG0Y_kPYWj5bIE4gRJU5z9R2Wqb
+
+
 <!------------------------------------------------------------------------------>
 \newpage
+
+
 
 # References
 

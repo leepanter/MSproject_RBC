@@ -38,6 +38,7 @@ library(plyr)
 library(nlme)
 library(geepack)
 library(forcats)
+library(gridExtra)
 ```
 
 
@@ -154,6 +155,7 @@ p=ggplot(logdat, aes(x=fit, y=res, color=subject.no))+
   geom_point()+
   geom_hline(yintercept = 0)+
   ggtitle("Fitted Vs Residual")+
+  theme(legend.position = "none")+
   xlab("Fitted Value")+
   ylab("Residual Value")
 p
@@ -163,6 +165,8 @@ q=ggplot(logdat, aes(sample = res))+
   stat_qq()+
   stat_qq_line()
 q
+
+grid.arrange(p,q,nrow=2)
 ```
 
 <!------------------------------------------------------------------------------>
