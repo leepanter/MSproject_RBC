@@ -33,10 +33,11 @@ This script will produce numerical and graphical summaries of relevant models co
 ***
 
 <!--  Packages -->  
-```{r, echo=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(ggplot2)
 library(plyr)
 library(nlme)
+library(dplyr)
 ```
 
 
@@ -86,9 +87,77 @@ dat=data.frame(subject.no, measurement, Perc.Mt, nCount, nFeature, cd19, mala)
 
 Following:
 
+* Quantitative summary tables
 * Histogram plots of Predictor and Outcome
 * Scatter Plot of Predictor v Outcome
 * Numerical five number summaries of Predictor and Outcome
+
+
+#### Quantitative Data Summaries
+
+```{r}
+# variables to include
+#  - Subject count
+#  - Observation count
+#  - Min, Max, Mean, Median, Mode observations
+#  - 
+
+mdataFilterQ=mdataFilter
+
+seqFilterQ=seqFilter
+seqFilterQ=t(seqFilterQ)
+seqFilterQ=data.frame(seqFilterQ)
+seqFilterQ$subject.no=subject.no
+
+mdataCountCols=
+    mdataFilterQ %>%
+      select(subject.no, well, Perc.Mt) %>% 
+      group_by(subject.no) %>% 
+      count(subject.no)
+mdataCountCols
+
+write.csv(mdataCountCols, file = "SubjectCounts.csv")
+
+
+mdataSummaryCols=
+  mdataFilterQ %>%
+    select(subject.no, well, Perc.Mt) %>% 
+    group_by(subject.no) %>% 
+    summarise(group_minPerct.Mt=min(Perc.Mt),
+              group_maxPerct.Mt=max(Perc.Mt),
+              group_avgPerct.Mt=mean(Perc.Mt),
+              group_medPerct.Mt=median(Perc.Mt))
+
+write.csv(mdataSummaryCols, file = "SubjectPerctMT.csv")
+
+seqCD19.SummaryCols=
+  seqFilterQ %>%
+  select(subject.no, CD19, MALAT1) %>% 
+  group_by(subject.no) %>% 
+  summarise(group_minCD19 =    min(CD19),
+            group_maxCD19 =    max(CD19),
+            group_avgCD19 =   mean(CD19),
+            group_medCD19 = median(CD19))
+seqCD19.SummaryCols
+
+write.csv(seqCD19.SummaryCols, file = "CD19Summaries.csv")
+
+
+seqMALA.SummaryCols=
+  seqFilterQ %>%
+  select(subject.no, CD19, MALAT1) %>% 
+  group_by(subject.no) %>% 
+  summarise(group_minMALA =    min(MALAT1),
+            group_maxMALA =    max(MALAT1),
+            group_avgMALA =   mean(MALAT1),
+            group_medMALA = median(MALAT1))
+seqMALA.SummaryCols
+
+write.csv(seqMALA.SummaryCols, file="MALASummaries.csv")            
+```
+
+
+
 
 #### Predictor Summaries
 ```{r}
