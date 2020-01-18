@@ -113,6 +113,11 @@ p
 loglmod0=lm(logfbln~logcd34, dat)
 (loglmod0s=summary(loglmod0))
 plot(loglmod0)
+
+coefTable.lmod0Temp=coef(loglmod0)
+x1=rep(NA, times=14 )
+coefTable.lmod0=c(coefTable.lmod0Temp[1], x1, coefTable.lmod0Temp[2], x1)
+
 ```
 ```{r}
 modelplot=ggplot(dat, aes(x=logcd34, y=logfbln, color=subject.no))+
@@ -199,6 +204,10 @@ q
 logLMwFEint=lm(logfbln~subject.no + logcd34 , data = dat)
 print(summary(logLMwFEint))
 print(AIC(logLMwFEint))
+
+coefTable.lmod1Temp=coef(logLMwFEint)
+coefTable.lmod1=c(coefTable.lmod1Temp, x1)
+
 
 coefIntercept=rep(coefficients(logLMwFEint)[1], times=15)
 coefSlope=rep(coefficients(logLMwFEint)[16], times=15)

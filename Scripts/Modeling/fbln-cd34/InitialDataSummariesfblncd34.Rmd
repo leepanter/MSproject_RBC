@@ -111,6 +111,10 @@ seqFilterQ=t(seqFilterQ)
 seqFilterQ=data.frame(seqFilterQ)
 seqFilterQ$subject.no=subject.no
 
+
+mdataCount= mdataFilterQ %>% 
+  
+
 mdataSummaryCols=
   mdataFilterQ %>%
     select(subject.no, well, Perc.Mt) %>%

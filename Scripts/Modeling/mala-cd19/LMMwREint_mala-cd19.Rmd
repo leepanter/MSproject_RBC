@@ -139,6 +139,16 @@ q
 ```{r}
 logLMMwREint=lmer(logmala~logcd19+(1|subject.no), dat)
 
+x1=rep(NA, times=14)
+
+coefTable.lmod3Temp=coef(logLMMwREint)
+CoefTable.lmod3=c(coefTable.lmod3Temp[["subject.no"]]$`(Intercept)`, 
+                  coefTable.lmod3Temp[["subject.no"]]$logcd19[1], x1)
+                  
+ranefTable.lmod3Temp=ranef(logLMMwREint)
+ranefTable.lmod3Temp2=ranefTable.lmod3Temp[["subject.no"]]$`(Intercept)`
+ranefTable.lmod3=c(ranefTable.lmod3Temp2, NA, x1)
+
 print(summary(logLMMwREint))
 print(AIC(logLMMwREint))
 

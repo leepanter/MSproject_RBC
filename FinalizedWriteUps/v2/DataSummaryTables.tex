@@ -1,0 +1,418 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage[margin=1.0in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{apacite}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Commands in math mode
+\newcommand{\norm}[1]{\left\Vert#1\right\Vert} %Euclidean norm
+\newcommand{\normbase}[2]{ \left\Vert#1\right\Vert_{#2} } %norm of base second argument
+\newcommand{\abs}[1]{\left\vert#1\right\vert} %absolute value
+\newcommand{\set}[1]{\left\{#1\right\}} %Set notation
+\newcommand{\Natsm}{\mathbb N} %Naturals symbol in math mode
+\newcommand{\Realsm}{\mathbb R} %Reals Symbol in math mode
+\newcommand{\Intsm}{\mathbb Z} %Integers symbol in math mode
+\newcommand{\Ratsm}{\mathbb Q} %Rationals symbol in math mode
+\newcommand{\Regm}[1]{\beta_{\texttt{#1}}} %Regression Coefficients in Math Mode
+\newcommand{\Lim}[2]{\lim\limits_{#1 \rightarrow #2}} %Limit cheat
+\newcommand{\IntEval}[3]{ \left [#1 \right ]_{#2}^{#3}} %Fancy Integral evaluation
+\newcommand{\Sum}[3]{\sum_{#1}^{#2} #3} %Sigma Notation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Commands in text mode
+\newcommand{\Regt}[1]{$\beta_{\texttt{#1}}$} %Regression Coefficients in text mode
+\newcommand{\Intst}{$\mathbb{Z}$} %Integers Symbol in text mode
+\newcommand{\Realst}{$\mathbb{R}$} %Reals symbol in text mode
+\newcommand{\Natst}{$\mathbb{N}$} %Naturals symbol in text mode
+\newcommand{\Ratst}{$\mathbb Q$} %Rationals symbol in text mode
+\newcommand{\RC}[1]{$\tgreen{\mathbf{\mathsf{#1}}}$} %Formatting for distinguishing code
+\newcommand{\ID}{\hspace{15pt}} %Indenting
+\newcommand{\Bold}[1]{\textbf{#1}} %Bold lettering
+\newcommand{\ttt}[1]{\texttt{#1}} %typewriter lettering
+\newcommand{\Tit}[1]{\textsl{#1}} %Italic Lettering
+\newcommand{\UL}[1]{\underline{#1}} %underlining
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Environments
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Theorems
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}{Corollary}
+\newtheorem{lem}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{rem}{Remark}
+\newtheorem{ex}{Example}
+\newtheorem{prob}{Problem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Colors
+\definecolor{Green}{rgb}{0,.5,0}
+\definecolor{Red}{rgb}{.8,.2,0}
+\definecolor{Yellow}{rgb}{.6,.6,.1}
+\definecolor{Cyan}{rgb}{.2,.6,.7}
+\definecolor{Purple}{rgb}{.4,0,1}
+\definecolor{deepred}{rgb}{.53,.29,.24}
+\definecolor{Black}{rgb}{0,0,0}
+\definecolor{Grey}{rgb}{.45,.45,.45}
+\newcommand{\tred}[1]{\textcolor{Red}{#1}}
+\newcommand{\tgreen}[1]{\textcolor{Green}{#1}}
+\newcommand{\tcyan}[1]{\textcolor{Cyan}{#1}}
+\newcommand{\tyellow}[1]{\textcolor{Yellow}{#1}}
+\newcommand{\tpurple}[1]{\textcolor{Purple}{#1}}
+\newcommand{\tblack}[1]{\textcolor{Black}{#1}}
+\newcommand{\tgrey}[1]{\textcolor{Grey}{#1}}
+\newcommand{\tdeepred}[1]{\textcolor{deepred}{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\textbf{\large{Subject Observation Counts}}
+
+\vspace{5pt}
+
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Subject number & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 \\
+\hline
+Observation Count & 0 & 0 & 0 & 0 & 58 & 86 & 32 & 0 & 31 & 21 & 107 & 0 & 107 & 100 & 25 \\
+\hline
+\hline
+  & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 & 24 & 25 & 26 & 27 & & &\\
+\hline
+ & 0 & 122 & 0 & 127 & 75 & 0 & 87 & 0 & 79 & 0 & 53 & 0 & & &\\
+\hline
+\end{tabular}
+
+\vspace{25pt}
+
+
+\textbf{\large{Percentage Mitochondrial}}
+
+\vspace{5pt}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Subject Number & Minimum & Maximum & Average & Median \\
+\hline
+5 & 18.94 & 54.16 & 31.67 & 30.23 \\
+\hline
+6 & 17.81 & 59.96 & 39.28 & 38.18 \\
+\hline
+7 & 23.52 & 59.77 & 39.87 & 38.84 \\
+\hline
+9 & 25.79 & 59.94 & 39.45 & 37.86 \\
+\hline
+10 & 21.25 & 56.11 & 35.78 & 32.90 \\
+\hline
+11 & 15.84 & 59.48 & 29.33 & 27.47 \\
+\hline
+13 & 13.55 & 58.52 & 37.32 & 36.12 \\
+\hline
+14 & 13.81 & 54.90 & 33.28 & 33.01 \\
+\hline
+15 & 10.88 & 58.99 & 50.20 & 53.01 \\
+\hline
+17 & 27.51 & 59.38 & 46.44 & 46.83 \\
+\hline
+19 & 6.67 & 59.65 & 29.03 & 27.19 \\
+\hline
+20 & 25.48 & 57.28 & 37.70 & 36.94 \\
+\hline
+22 & 15.05 & 59.23 & 30.41 & 28.85 \\
+\hline
+24 & 19.81 & 56.01 & 33.92 & 33.29 \\
+\hline
+26 & 13.94 & 58.59 & 34.43 & 33.63 \\
+\hline
+\end{tabular}
+
+
+\vspace{25pt}
+
+\textbf{\large{CD19 Summaries}}
+
+\vspace{5pt}
+
+\begin{tabular}{|c|c|c|}
+\hline
+maximum & average & median \\
+\hline
+678 & 36.6724 & 0.0 \\
+\hline
+299 & 36.6860 & 7.5 \\
+\hline
+10 & 2.1250 & 1.0 \\
+\hline
+1052 & 89.4194 & 3.0 \\
+\hline
+158 & 37.5714 & 2.0 \\
+\hline
+339 & 28.3178 & 1.0 \\
+\hline
+629 & 56.0841 & 18.0 \\
+\hline
+251 & 42.2600 & 19.0 \\
+\hline
+148 & 26.6000 & 0.0 \\
+\hline
+982 & 112.3770 & 16.0 \\
+\hline
+665 & 59.3386 & 5.0 \\
+\hline
+287 & 40.1200 & 23.0 \\
+\hline
+380 & 43.4483 & 1.0 \\
+\hline
+282 & 55.0127 & 27.0 \\
+\hline
+1624 & 268.4151 & 110.0 \\
+\hline
+\end{tabular}
+
+
+\vspace{25pt}
+
+\textbf{\large{MALA (Pre-transformation Summaries}}
+
+\vspace{5pt}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+minimum & maximum & average & median \\
+\hline
+67 & 40812 & 10206.3621 & 9195.0 \\
+\hline
+757 & 30774 & 11568.2791 & 11689.0 \\
+\hline
+441 & 17916 & 6868 & 4039.5 \\
+\hline
+311 & 18239 & 5703.9355 & 5983.0 \\
+\hline
+1875 & 17160 & 6638.5714 & 6190.0 \\
+\hline
+349 & 34082 & 9716.0280 & 8826.0 \\
+\hline
+99 & 25572 & 5867.9439 & 4895.0 \\
+\hline
+355 & 15740 & 6154.1500 & 5720.5 \\
+\hline
+157 & 11923 & 3839.0800 & 3467.0 \\
+\hline
+337 & 8342 & 2960.2541 & 2692.0 \\
+\hline
+227 & 91961 & 13959.9843 & 10125.0 \\
+\hline
+379 & 21736 & 7301.4133 & 6417.0 \\
+\hline
+161 & 28429 & 6881.7471 & 5068.0 \\
+\hline
+240 & 42792 & 6248.8228 & 5955.0 \\
+\hline
+1114 & 32426 & 8463.1698 & 6426.0 \\
+\hline
+\end{tabular}
+
+\vspace{25pt}
+
+\textbf{\large{CD34 Summaries}}
+
+\vspace{5pt}
+
+\begin{tabular}{|c|c|c|}
+\hline
+Maximium & Average & Median \\
+\hline
+19 & 3.0517 & 1 \\
+\hline
+0 & 0 & 0 \\
+\hline
+0 & 2 & 1 \\
+\hline
+6 & 0.4516 & 0 \\
+\hline
+5 & 0.6667 & 0 \\
+\hline
+7 & 1.2056 & 1 \\
+\hline
+0 & 0 & 0 \\
+\hline
+1 & 0.4000 & 0 \\
+\hline
+0 & 0 & 0 \\
+\hline
+0 & 0 & 0 \\
+\hline
+0 & 0 & 0 \\
+\hline
+2 & 0.1867 & 0 \\
+\hline
+4 & 0.3563 & 0 \\
+\hline
+5 & 0.2911 & 0 \\
+\hline
+0 & 0 & 0 \\
+\hline
+\end{tabular}
+
+\vspace{25pt}
+
+\textbf{\large{FBLN Summaries}}
+
+\vspace{5pt}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+Minimum & Maximum & Average & Median \\
+\hline
+3 & 41 & 19.3448 & 18 \\
+\hline
+0 & 0 & 0 & 0 \\
+\hline
+0 & 16 & 4.2500 & 3 \\
+\hline
+0 & 8 & 1.8710 & 1 \\
+\hline
+0 & 30 & 11.9524 & 10 \\
+\hline
+0 & 8 & 1.5140 & 1 \\
+\hline
+0 & 1 & 0.0093 & 0 \\
+\hline
+0 & 5 & 0.5700 & 0 \\
+\hline
+0 & 1 & 0.0400 & 0 \\
+\hline
+0 & 3 & 0.0246 & 0 \\
+\hline
+0 & 2 & 0.0157 & 0 \\
+\hline
+0 & 9 & 2.5867 & 2 \\
+\hline
+0 & 11 & 0.9885 & 0 \\
+\hline
+0 & 4 & 0.4557 & 0 \\
+\hline
+0 & 0 & 0 & 0 \\
+\hline
+\end{tabular}
+
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Model Number & mala intercept & fbln intercept & mala slope & fbln slope \\
+\hline
+\hline
+0 & $8.462$ & $0.351$ & $0.049$ & $0.788$ \\
+\hline
+1 & $7.549$ & $2.757$ & $0.048$ & $0.131$ \\
+\hline
+2 & $6.979$ & $2.797$ & $0.514$ & $0.084$ \\
+\hline
+3 & $6.812$ & $$-$0.649$ & $0.049$ & $0.135$ \\
+\hline
+4 & $5.953$ & $$-$0.645$ & $0.756$ & $0.170$ \\
+\hline
+5 & $8.462$ & $0.351$ & $0.049$ & $0.788$ \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{|c||c|c|c|c||c|c|c|c|}
+\hline
+ subject.no & mala.mod1 & mod2 & mod3 & mod4 & fbln.mod1 & mod2 & mod3 & mod4 \\
+\hline
+\hline
+ $5$ & $$-$1.987$ & $$-$2.594$ & $$-$1.967$ & $$-$2.523$ & $2.441$ & $2.488$ & $$-$0.761$ & $$-$0.756$ \\
+\hline
+ $6$ & $1.160$ & $0.420$ & $1.162$ & $0.543$ & $$-$0.760$ & $$-$0.752$ & $$-$0.760$ & $$-$0.755$ \\
+\hline
+ $7$ & $$-$0.066$ & $0.486$ & $$-$0.068$ & $0.114$ & $0.747$ & $0.741$ & $$-$0.754$ & $$-$0.749$ \\
+\hline
+ $9$ & $$-$0.475$ & $$-$0.449$ & $$-$0.449$ & $$-$0.409$ & $0.112$ & $$-$0.024$ & $$-$0.723$ & $$-$0.719$ \\
+\hline
+ $10$ & $0.428$ & $0.731$ & $0.364$ & $0.534$ & $1.858$ & $1.814$ & $$-$0.752$ & $$-$0.747$ \\
+\hline
+ $11$ & $1.235$ & $1.168$ & $1.252$ & $1.257$ & $$-$0.050$ & $$-$0.005$ & $$-$0.749$ & $$-$0.744$ \\
+\hline
+ $13$ & $$-$0.289$ & $0.033$ & $$-$0.306$ & $0.022$ & $$-$0.753$ & $$-$0.745$ & $$-$0.454$ & $$-$0.433$ \\
+\hline
+ $14$ & $0.101$ & $0.121$ & $0.092$ & $0.136$ & $$-$0.382$ & $$-$0.371$ & $$-$0.381$ & $$-$0.377$ \\
+\hline
+ $15$ & $$-$0.982$ & $$-$0.785$ & $$-$0.888$ & $$-$0.746$ & $$-$0.728$ & $$-$0.720$ & $0.113$ & $0.040$ \\
+\hline
+ $17$ & $$-$1.607$ & $$-$1.080$ & $$-$1.660$ & $$-$1.157$ & $$-$0.747$ & $$-$0.739$ & $$-$0.050$ & $$-$0.013$ \\
+\hline
+ $19$ & $1.676$ & $1.664$ & $1.712$ & $1.790$ & $$-$0.750$ & $$-$0.742$ & $0.484$ & $0.501$ \\
+\hline
+ $20$ & $0.476$ & $0.348$ & $0.467$ & $0.374$ & $0.481$ & $0.518$ & $$-$0.253$ & $$-$0.283$ \\
+\hline
+ $22$ & $$-$0.029$ & $0.060$ & $$-$0.038$ & $0.072$ & $$-$0.254$ & $$-$0.293$ & $0.745$ & $0.730$ \\
+\hline
+ $24$ & $0.066$ & $0.112$ & $0.055$ & $0.119$ & $$-$0.454$ & $$-$0.418$ & $1.849$ & $1.821$ \\
+\hline
+ $26$ & $0.292$ & $$-$0.234$ & $0.272$ & $$-$0.127$ & $$-$0.760$ & $$-$0.752$ & $2.446$ & $2.482$ \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[!htbp]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+Subject.no & mala.mod2 & mod4 & fbln.mod2 & mod4 \\
+\hline
+\hline
+5 & $2.776$ & $3.227$ & $$-$0.043$ & $0.0001$ \\
+\hline
+6 & $0.730$ & $0.880$ & $$ & $0.0001$ \\
+\hline
+7 & $$-$2.194$ & $$-$0.999$ & $$-$0.149$ & $0.0001$ \\
+\hline
+9 & $0.153$ & $0.011$ & $2.178$ & $0.0001$ \\
+\hline
+10 & $$-$0.566$ & $$-$0.526$ & $0.376$ & $0.0001$ \\
+\hline
+11 & $$-$0.323$ & $$-$0.509$ & $$-$0.432$ & $0.0001$ \\
+\hline
+13 & $$-$0.301$ & $$-$0.556$ & $$ & $$-$1.317$ \\
+\hline
+14 & $$-$0.014$ & $$-$0.137$ & $$-$0.623$ & $$-$0.316$ \\
+\hline
+15 & $0.064$ & $$-$0.137$ & $$ & $2.744$ \\
+\hline
+17 & $$-$0.178$ & $$-$0.460$ & $$ & $$-$0.837$ \\
+\hline
+19 & $$-$0.451$ & $$-$0.698$ & $$ & $$-$1.256$ \\
+\hline
+20 & $0.071$ & $0.013$ & $$-$1.122$ & $1.228$ \\
+\hline
+22 & $$-$0.121$ & $$-$0.293$ & $0.695$ & $$-$0.159$ \\
+\hline
+24 & $$-$0.034$ & $$-$0.161$ & $$-$0.881$ & $0.597$ \\
+\hline
+26 & $0.387$ & $0.344$ & $$ & $$-$0.683$ \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+
+\end{document}

@@ -153,6 +153,19 @@ q
 ```{r}
 logLMMwREslope=lmer(logfbln~1 + logcd34 + (1|subject.no) + 
                       (0+logcd34|subject.no), logdat)
+
+x1=rep(NA, times=14)
+
+coefTable.lmod4Temp=coef(logLMMwREslope)
+CoefTable.lmod4=c(coefTable.lmod4Temp[["subject.no"]]$`(Intercept)`, 
+                  coefTable.lmod4Temp[["subject.no"]]$logcd34)
+
+                  
+ranefTable.lmod4Temp=ranef(logLMMwREslope)
+ranefTable.lmod4=c(ranefTable.lmod4Temp[["subject.no"]]$`(Intercept)`, 
+                   ranefTable.lmod4Temp[["subject.no"]]$logcd34)
+
+
 print(summary(logLMMwREslope))
 print(AIC(logLMMwREslope))
 

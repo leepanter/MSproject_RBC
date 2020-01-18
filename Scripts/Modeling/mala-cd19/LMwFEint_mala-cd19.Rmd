@@ -93,6 +93,7 @@ dat$logmala=log(mala+1, base = exp(1))
 ```{r, fig.width=4}
 lmod0=lm(mala~cd19, dat)
 (lmod0s=summary(lmod0))
+
 plot(lmod0)
 ```
 
@@ -112,6 +113,11 @@ p
 ```{r, fig.width=4}
 loglmod0=lm(logmala~logcd19, dat)
 (loglmod0s=summary(loglmod0))
+
+coefTable.lmod0Temp=coef(loglmod0)
+x1=rep(NA, times=14 )
+coefTable.lmod0=c(coefTable.lmod0Temp[1], x1, coefTable.lmod0Temp[2], x1)
+
 plot(loglmod0)
 ```
 
@@ -188,6 +194,10 @@ logLMwFEint=lm(logmala~subject.no + logcd19 , data = dat)
 print(summary(logLMwFEint))
 print(AIC(logLMwFEint))
 
+coefTable.lmod1Temp=coef(logLMwFEint)
+coefTable.lmod1=c(coefTable.lmod1Temp, x1)
+
+
 coefIntercept=rep(coefficients(logLMwFEint)[1], times=15)
 coefSlope=rep(coefficients(logLMwFEint)[16], times=15)
 
@@ -221,6 +231,9 @@ q
 grid.arrange(p,q, nrow=2)
 
 ```
+
+
+
 
 <!------------------------------------------------------------------------------>
 <!-- End Script -->       

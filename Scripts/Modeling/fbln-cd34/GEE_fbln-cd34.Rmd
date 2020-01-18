@@ -135,6 +135,10 @@ logGEEmod=geeglm(logfbln~ logcd34,
               id=IDgee,
               data = logdat,
               corstr = "independence")
+
+coefTable.GEETemp=coef(logGEEmod)
+coefTable.GEE=c(coefTable.GEETemp[1], x1, coefTable.GEETemp[2], x1)
+
 print(summary(logGEEmod))
 print(anova(logGEEmod))
 

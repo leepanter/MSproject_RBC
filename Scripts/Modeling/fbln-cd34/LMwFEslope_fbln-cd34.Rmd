@@ -133,6 +133,9 @@ This fitted v residual plot "different" from the first model, but still does not
 # Transformed Model
 ```{r}
 logLMwFEslope=lm(logfbln~subject.no + subject.no:logcd34 + logcd34 , data = dat)
+
+coefTable.lmod2=coef(logLMwFEslope)
+
 print(summary(logLMwFEslope))
 print(AIC(logLMwFEslope))
 
