@@ -3,11 +3,11 @@ title: "Comparing Models of Subject-Clustered Single-Cell Data"
 author: "Lee Panter"
 csl: mathematical-biosciences-and-engineering.csl
 output:
-  word_document: default
   pdf_document:
     df_print: kable
     includes:
       in_header: Rmarkdown_preamble.tex
+  word_document: default
 geometry: margin=1.0in
 fontsize: 12pt
 subtitle: Version 2.0
