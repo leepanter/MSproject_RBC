@@ -3,7 +3,7 @@
 
 
 # Load Data
-load("/Users/lee/Desktop/CD34FblnWS.RData")
+load("/Users/lee/Google Drive/RBC Project/Data and Scripts/FinalData/CompiledDataEnvironments/CD34FblnWS.RData")
 
 # Packages
 library(nlme)
@@ -19,17 +19,17 @@ logLMMwREint.nlme=lme(fixed=logfbln~1 + logcd34,
                       data = dat)
 
 logLMMwREslope.nlme=lme(fixed=logfbln~1 + logcd34,
-                        random=~(1+logfbln|subject.no),
+                        random=~1+logcd34|subject.no,
                         data = dat)
 
 ## Model 0 < Model 1
 anova(loglmod0, logLMwFEint)
 
 ## Model 0 < Model 3
-x=anova.lme(loglmod0.nlme,logLMMwREint.nlme)
+anova.lme(loglmod0.nlme,logLMMwREint.nlme)
 
-## Model 0 < Model 3
-anova.lme(loglmod0.nlme,logLMMwREslope.nlme)
+## Model 3 < Model 4
+anova.lme(logLMMwREint.nlme,logLMMwREslope.nlme)
 
 
 

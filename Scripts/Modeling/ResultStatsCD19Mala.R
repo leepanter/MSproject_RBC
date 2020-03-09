@@ -3,7 +3,8 @@
 
 
 # Load Data
-load("/Users/lee/Desktop/CD19MalaWS.RData")
+load("/Users/lee/Google Drive/RBC Project/Data and Scripts/FinalData/CompiledDataEnvironments/CD19MalaWS.RData")
+
 
 # Packages
 library(nlme)
@@ -19,7 +20,7 @@ logLMMwREint.nlme=lme(fixed=logmala~1 + logcd19,
                         data = dat)
 
 logLMMwREslope.nlme=lme(fixed=logmala~1 + logcd19,
-                        random=~(1+logcd19|subject.no),
+                        random=~1+logcd19|subject.no,
                         data = dat)
 
 ## Model 0 < Model 1
@@ -28,8 +29,8 @@ anova(loglmod0, logLMwFEint)
 ## Model 0 < Model 3
 x=anova.lme(loglmod0.nlme,logLMMwREint.nlme)
 
-## Model 0 < Model 3
-anova.lme(loglmod0.nlme,logLMMwREslope.nlme)
+## Model 3 < Model 4
+anova.lme(logLMMwREint.nlme,logLMMwREslope.nlme)
 
 
 

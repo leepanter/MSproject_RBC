@@ -1,0 +1,52 @@
+---
+title: "Comparing Models of Subject-Clustered Single-Cell Data"
+author: "Lee Panter"
+csl: mathematical-biosciences-and-engineering.csl
+output:
+  pdf_document: 
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+  word_document: 
+geometry: margin=1.0in
+fontsize: 12pt
+subtitle: Version 6.0-Abstract
+bibliography: Bib_AccRefSheet.bib
+---
+
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+
+
+<!-- ####	 Set Working Directory	 ####   -->
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/FinalizedWriteUps/v6/1 Abstract"
+setwd(WD)
+```
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+
+# Abstract
+
+Single-Cell RNA sequencing data represents a revolutionary shift to approaches being used to decode the human transcriptome. Such data are becoming more prevalent, and are gathered on ever-larger samples of individuals, enabling analysis of subject-level relationships.  However, it is not always clear how to conduct this subject-level analysis.  Current methods often do not account for nested study designs in which samples of hundreds, or thousands of cells are gathered from multiple individuals.  Therefore, there is a need to outline, analyze, and compare methods for estimating subject-level relationships in single-cell expression.  
+
+Here, we compare three modeling strategies for detecting subject level associations using single-cell RNA sequencing expression: Linear Regression with Fixed Effects, Linear Mixed Effects Models with Random Effects, and Generalized Estimating Equations.  We first present each method.  We then compare the regression estimates and standard errors for each method using real single-cell data from a Lupus Nephritis study of 27 subjects.  We hoped that this paper presents insights into methods to analyze subject level associations from single-cell expression data.
+<!------------------------------------------------------------------------------>
+
+
+# References
+
+\bibliography{Bib_AccRefSheet}
+

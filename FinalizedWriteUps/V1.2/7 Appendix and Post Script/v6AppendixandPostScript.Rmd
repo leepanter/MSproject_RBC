@@ -1,0 +1,286 @@
+---
+title: "Comparing Models of Subject-Clustered Single-Cell Data"
+author: "Lee Panter"
+csl: mathematical-biosciences-and-engineering.csl
+output:
+  pdf_document: 
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+  word_document: 
+geometry: margin=1.0in
+fontsize: 12pt
+subtitle: Version 6.0-Appendix and Post-Script
+bibliography: Bib_AccRefSheet.bib
+---
+
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+
+
+<!-- ####	 Set Working Directory	 ####   -->
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/FinalizedWriteUps/v6/7 Appendix and Post Script"
+setwd(WD)
+```
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+
+# Appendix
+
+## Derivation of Applied Variables
+
+
+## Information on Model Rank
+
+\newpage
+
+## Tables
+
+### Table A1
+
+\begin{center}
+
+\textbf{\large{CD19 Summaries}}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Subject Number & Minimum & Maximum & Average & Median \\ 
+\hline
+\hline
+5 &  0 & 678 & 36.6724 & 0.0 \\ 
+\hline  
+6 &  0 & 299 & 36.6860 & 7.5 \\ 
+\hline  
+7 &  0 & 10 & 2.1250 & 1.0 \\ 
+\hline  
+9 &  0 & 1052 & 89.4194 & 3.0 \\ 
+\hline  
+10 & 0 & 158 & 37.5714 & 2.0 \\ 
+\hline   
+11 & 0 & 339 & 28.3178 & 1.0 \\ 
+\hline   
+13 & 0 & 629 & 56.0841 & 18.0 \\ 
+\hline   
+14 & 0 & 251 & 42.2600 & 19.0 \\ 
+\hline   
+15 & 0 & 148 & 26.6000 & 0.0 \\ 
+\hline   
+17 & 0 & 982 & 112.3770 & 16.0 \\ 
+\hline   
+19 & 0 & 665 & 59.3386 & 5.0 \\ 
+\hline   
+20 & 0 & 287 & 40.1200 & 23.0 \\ 
+\hline   
+22 & 0 & 380 & 43.4483 & 1.0 \\ 
+\hline   
+24 & 0 & 282 & 55.0127 & 27.0 \\ 
+\hline  
+26 & 0 & 1624 & 268.4151 & 110.0 \\  
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+Table A1: Predictor $CD19$ variable summaries ($CD19 \sim MALAT1$)
+\end{center}
+
+
+\newpage
+
+### Table A2
+
+
+\begin{center}
+
+\textbf{\large{MALAT1 Summaries}}
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Subject Number & Minimum & Maximum & Average & Median \\ 
+\hline
+\hline
+5  & 67 & 40812 & 10206.3621 & 9195.0 \\ 
+\hline 
+6  & 757 & 30774 & 11568.2791 & 11689.0 \\ 
+\hline 
+7  & 441 & 17916 & 6868 & 4039.5 \\ 
+\hline 
+9  & 311 & 18239 & 5703.9355 & 5983.0 \\ 
+\hline 
+10 & 1875 & 17160 & 6638.5714 & 6190.0 \\ 
+\hline
+11 & 349 & 34082 & 9716.0280 & 8826.0 \\ 
+\hline 
+13 & 99 & 25572 & 5867.9439 & 4895.0 \\ 
+\hline 
+14 & 355 & 15740 & 6154.1500 & 5720.5 \\ 
+\hline 
+15 & 157 & 11923 & 3839.0800 & 3467.0 \\ 
+\hline 
+17 & 337 & 8342 & 2960.2541 & 2692.0 \\ 
+\hline 
+19 & 227 & 91961 & 13959.9843 & 10125.0 \\ 
+\hline 
+20 & 379 & 21736 & 7301.4133 & 6417.0 \\ 
+\hline 
+22 & 161 & 28429 & 6881.7471 & 5068.0 \\ 
+\hline 
+24 & 240 & 42792 & 6248.8228 & 5955.0 \\ 
+\hline 
+26 & 1114 & 32426 & 8463.1698 & 6426.0 \\ 
+\hline  
+\end{tabular}
+
+\vspace{5pt}
+
+Table A2: Response $MALAT1$ variable summaries ($CD19 \sim MALAT1$)
+
+\end{center}
+
+
+\newpage
+
+
+### Table A3
+
+\begin{center}
+
+\textbf{\large{CD34 Summaries}}
+
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Subject Number & Minimum & Maximum & Average & Median \\ 
+\hline
+\hline
+5  & 0 & 19 & 3.0517 & 1 \\ 
+\hline 
+6  & 0 & 0 & 0 & 0 \\ 
+\hline 
+7  & 0 & 0 & 2 & 1 \\ 
+\hline 
+9  & 0 & 6 & 0.4516 & 0 \\ 
+\hline 
+10 & 0 & 5 & 0.6667 & 0 \\ 
+\hline 
+11 & 0 & 7 & 1.2056 & 1 \\ 
+\hline 
+13 & 0 & 0 & 0 & 0 \\ 
+\hline 
+14 & 0 & 1 & 0.4000 & 0 \\ 
+\hline 
+15 & 0 & 0 & 0 & 0 \\ 
+\hline 
+17 & 0 & 0 & 0 & 0 \\ 
+\hline 
+19 & 0 & 0 & 0 & 0 \\ 
+\hline 
+20 & 0 & 2 & 0.1867 & 0 \\ 
+\hline 
+22 & 0 & 4 & 0.3563 & 0 \\ 
+\hline 
+24 & 0 & 5 & 0.2911 & 0 \\ 
+\hline 
+26 & 0 & 0 & 0 & 0 \\  
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+Table A3: Predictor $CD34$ variable summaries ($CD34 \sim FBLN1$)
+
+\end{center}
+
+
+
+\newpage
+
+### Table A4
+
+\begin{center}
+
+\textbf{\large{FBLN1 Summaries}}
+
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Subject Number & Minimum & Maximum & Average & Median \\ 
+\hline
+\hline
+5  & 3 & 41 & 19.3448 & 18 \\ 
+\hline 
+6  & 0 & 0 & 0 & 0 \\ 
+\hline 
+7  & 0 & 16 & 4.2500 & 3 \\ 
+\hline 
+9  & 0 & 8 & 1.8710 & 1 \\ 
+\hline 
+10 & 0 & 30 & 11.9524 & 10 \\ 
+\hline 
+11 & 0 & 8 & 1.5140 & 1 \\ 
+\hline 
+13 & 0 & 1 & 0.0093 & 0 \\ 
+\hline 
+14 & 0 & 5 & 0.5700 & 0 \\ 
+\hline 
+15 & 0 & 1 & 0.0400 & 0 \\ 
+\hline 
+17 & 0 & 3 & 0.0246 & 0 \\ 
+\hline 
+19 & 0 & 2 & 0.0157 & 0 \\ 
+\hline 
+20 & 0 & 9 & 2.5867 & 2 \\ 
+\hline 
+22 & 0 & 11 & 0.9885 & 0 \\ 
+\hline 
+24 & 0 & 4 & 0.4557 & 0 \\ 
+\hline 
+26 & 0 & 0 & 0 & 0 \\ 
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+Table A4: Response $FBLN1$ variable summaries ($CD34 \sim FBLN1$)
+\end{center}
+
+
+<!------------------------------------------------------------------------------>
+
+\newpage
+
+# Code and Data
+
+All code for the above analysis was written and evaluated in RStudio Version 1.2.1335, and is available for download at the following GitHub repository: 
+
+https://github.com/leepanter/MSproject_RBC.git
+
+Additionally, a link to all necessarry and referrence data files (including original data) are contained in the following Google Drive:
+
+https://drive.google.com/open?id=1gjHaMJG0Y_kPYWj5bIE4gRJU5z9R2Wqb
+
+
+<!------------------------------------------------------------------------------>
+
+
+
+# References
+
+\bibliography{Bib_AccRefSheet}
+
+
+<!------------------------------------------------------------------------------>
+
