@@ -1,6 +1,4 @@
 ---
-title: "Comparing Models of Subject-Clustered Single-Cell Data"
-author: "Lee Panter"
 csl: mathematical-biosciences-and-engineering.csl
 output:
   pdf_document: 
@@ -10,7 +8,7 @@ output:
   word_document: 
 geometry: margin=1.0in
 fontsize: 12pt
-subtitle: Version 6.0-Model Descriptions
+subtitle: Version v1.2-Model Descriptions
 bibliography: Bib_AccRefSheet.bib
 ---
 
@@ -30,7 +28,7 @@ knitr::opts_chunk$set(echo=FALSE,
 
 <!-- ####	 Set Working Directory	 ####   -->
 ```{r, echo=FALSE}
-WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/FinalizedWriteUps/v6/4 Model Descriptions"
+WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/FinalizedWriteUps/V1.2/4 Model Descriptions"
 setwd(WD)
 ```
 <!------------------------------------------------------------------------------>
@@ -211,6 +209,9 @@ $$for \quad j,k \in \left \{  1, \ldots, n_{i}   \right \}$$
 # References
 
 \bibliography{Bib_AccRefSheet}
+
+
+
 
 
 
