@@ -23,13 +23,13 @@ logLMMwREslope.nlme=lme(fixed=logfbln~1 + logcd34,
                         data = dat)
 
 ## Model 0 < Model 1
-anova(loglmod0, logLMwFEint)
+x=anova(loglmod0, logLMwFEint)
 
 ## Model 0 < Model 3
-anova.lme(loglmod0.nlme,logLMMwREint.nlme)
+x=anova.lme(loglmod0.nlme,logLMMwREint.nlme)
 
 ## Model 3 < Model 4
-anova.lme(logLMMwREint.nlme,logLMMwREslope.nlme)
+x=anova.lme(logLMMwREint.nlme,logLMMwREslope.nlme)
 
 
 

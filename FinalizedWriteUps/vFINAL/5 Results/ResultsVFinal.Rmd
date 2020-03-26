@@ -1,0 +1,334 @@
+---
+csl: mathematical-biosciences-and-engineering.csl
+output:
+  pdf_document: 
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+  word_document: 
+geometry: margin=1.0in
+fontsize: 12pt
+bibliography: Bib_AccRefSheet.bib
+---
+
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+
+
+<!-- ####	 Set Working Directory	 ####   -->
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/FinalizedWriteUps/V2.2/5 Results"
+setwd(WD)
+```
+<!------------------------------------------------------------------------------>
+
+
+<!------------------------------------------------------------------------------>
+# Results
+
+\small{
+\begin{center}
+\centering
+\begin{tabular}{|m{0.15\textwidth}|m{0.275\textwidth}|c|c|c|c|}
+\hline \noalign{\smallskip}
+\center{Model \newline Designation} & \center{Model Description} & Estimate & Std. Error & Test Statistic & p-value \\
+\hline
+\hline
+\center{LM} & \center{Linear Model} &  4.918e-2 &  1.455e-2  & 3.381 &  7.47e-4\\
+\hline \noalign{\smallskip}
+\center{LM-FE} & \center{Linear Model with  \newline Fixed-Effect Intercept} &  4.833e-2 &  1.381e-2 & 3.500 &  4.84e-4\\
+\hline \noalign{\smallskip}
+\center{LMM-RI} & \center{Linear Mixed Model with \newline Random Intercept} &  4.920e-2 &  1.374e-2 & 3.579  &  3.6e-4 \\
+\hline \noalign{\smallskip}
+\center{LMM-RS} & \center{Linear Mixed Model with \newline Random Slope }  & 5.938e-2 &  3.538e-2  & 1.678 &  1.19e-1 \\
+\hline \noalign{\smallskip}
+\center{GEE} & \center{Generalized Estimating Equations } & 4.918e-2 & 1.455e-2 & 3.381** & 7.47e-4 \\
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X. $MALAT1 \sim CD19$ model estimates:} Fixed effect slope estimate, standard error, test statistic, and p-value for each model for the relationship between the predictor $CD19$ and the outcome $MALAT1$.  ** Approximate Wald-Z distribution.
+\end{center}
+}
+
+\vspace{5pt}
+
+\small{
+\begin{center}
+\centering
+\begin{tabular}{|m{0.15\textwidth}|m{0.275\textwidth}|c|c|c|c|}
+\hline \noalign{\smallskip}
+\center{Model \newline Designation} & \center{Model Description} & Estimate & Std. Error & Test Statistic & p-value \\
+\hline
+\hline
+\center{LM} & \center{Linear Model} &  7.884e-1 &  4.92e-2  & 4.002 & <2e-16\\
+\hline \noalign{\smallskip}
+\center{LM-FE} & \center{Linear Model with  \newline Fixed-Effect Intercept} &  1.31e-1 & 3.42e-2  & 3.818 & 1.42e-4 \\
+\hline \noalign{\smallskip}
+\center{LMM-RI} & \center{Linear Mixed Model with \newline Random Intercept} &  1.35e-1 & 3.42e-2  & 3.95 & 8.4e-5 \\
+\hline \noalign{\smallskip}
+\center{LMM-RS} & \center{Linear Mixed Model with \newline Random Slope }  & 1.705e-1  & 7.29e-2 & 2.34  & 6.7e-2 \\
+\hline \noalign{\smallskip}
+\center{GEE} & \center{Generalized Estimating Equations } & 7.884e-1 & 4.92e-2 & 4.002** & < 2e-16 \\
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X. $FBLN1 \sim CD34$ model estimates:} Fixed effect slope estimate, standard error, test statistic, and p-value for each model for the relationship between the predictor $CD34$ and the outcome $FBLN1$.  ** Approximate Wald-Z distribution.
+\end{center}
+}
+
+
+Displayed in \textbf{table X!X} - \textbf{table X!X} below are percent change in: parameter estimate, standard error, and test statistic for the $MALAT1 \sim CD19$ variable pairing (\textbf{tables X!X-X!X}) and the $FBLN1 \sim CD34$ variable paring (\textbf{tables X!X-X!X}). Where the percent change in estimate is defined as:
+$$\text{Percent Change} \ [A]_{ij} = \left(\frac{A_{j}-A_{i}}{A_{i}}\right) * 100$$
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|}
+\hline
+Model & LM & LM-FE & LMM-RI & LMM-RS & GEE \\
+\hline
+\hline
+LM & 0 &  -1.7283 &  0.0407 & 20.7401 &  0.0000 \\
+\hline
+LM-FE & 1.7587 &  0 &  1.8001 & 22.8636  & 1.7587  \\      
+\hline
+LMM-RI & -0.0407 & -1.7683 &  0 & 20.6911 & -0.0407  \\
+\hline
+LMM-RS & -17.1775 & -18.6090 & -17.1438 & 0 & -17.1775 \\
+\hline
+GEE & 0.0000 & -1.7283  & 0.0407 & 20.7401  & 0 \\
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X:} Main effect slope percent change matrix, $MALAT1 \sim CD19$ variable pairing
+\end{center}
+
+\vspace{20pt}
+
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|}
+\hline
+Model & LM & LM-FE & LMM-RI & LMM-RS & GEE \\
+\hline
+\hline
+LM & 0   & -5.0859  & -5.5670   & 143.1615  & 0.0000  \\
+\hline
+LM-FE & 5.3584   & 0   & -0.5069   & 156.1912  & 5.3584  \\     
+\hline
+LMM-RI & 5.8952   & 0.5095   & 0    & 157.4964  & 5.8952  \\
+\hline
+LMM-RS & -58.8751 & -60.9666 & -61.1645  & 0    & -58.8751  \\
+\hline
+GEE &  0.0000   & -5.0859  & -5.5670   & 143.1615  & 0        \\
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X:} Main effect slope standard error percent change matrix, $MALAT1 \sim CD19$ variable pairing
+\end{center}
+
+
+\vspace{20pt}
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|}
+\hline
+Model & LM & LM-FE & LMM-RI & LMM-RS & GEE \\
+\hline
+\hline
+LM & 0  & 3.5197   & 5.8563    & -50.3697  & 0.0000 \\
+\hline
+LM-FE & -3.4000  & 0   & 2.2571    & -52.0571  & -3.4000 \\
+\hline
+LMM-RI & -5.5323  & -2.2073  & 0    & -53.1154  & -5.5323  \\
+\hline
+LM-RS & 101.4899 & 108.5816 & 113.2896  & 0    & 101.4899 \\
+\hline
+GEE & 0.0000  & 3.5197   & 5.8563    & -50.3697  & 0 \\
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X:} Main effect slope test statistic percent change matrix, $MALAT1 \sim CD19$ variable pairing
+\end{center}
+
+
+\vspace{20pt}
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|}
+\hline
+Model & LM & LM-FE & LMM-RI & LMM-RS & GEE \\
+\hline
+\hline
+LM & 0   & -83.3841 & -82.8767  & -78.3739 & 0.0000  \\
+\hline
+LM-FE & 501.8321 & 0   & 3.0534    & 30.1527  & 501.8321 \\
+\hline
+LM-RI & 484.0000 & -2.9630  & 0    & 26.2963  & 484.0000  \\
+\hline
+LM-RS & 362.4047 & -23.1672 & -20.8211  & 0   & 362.4047  \\
+\hline
+GEE & 0.0000   & -83.3841 & -82.8767  & -78.3739 & 0  \\
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X:} Main effect slope percent change matrix, $FBLN1 \sim CD34$ variable pairing
+\end{center}
+
+\vspace{20pt}
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|}
+\hline
+Model & LM & LM-FE & LMM-RI & LMM-RS & GEE \\
+\hline
+\hline
+LM & 0   & -30.4878 & -30.4878  & 48.1707   & 0.0000  \\
+\hline
+LM-FE & 43.8596  & 0   & 0.0000    & 113.1579  & 43.8596  \\
+\hline
+LM-RI & 43.8596  & 0.0000   & 0    & 113.1579  & 43.8596  \\
+\hline
+LM-RS & -32.5103 & -53.0864 & -53.0864  & 0    & -32.5103  \\
+\hline
+GEE &  0.0000   & -30.4878 & -30.4878  & 48.1707   & 0  \\
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X:} Main effect slope standard error percent change matrix, $FBLN1 \sim CD34$ variable pairing
+\end{center}
+
+\vspace{20pt}
+
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|c|c|}
+\hline
+Model & LM & LM-FE & LMM-RI & LMM-RS & GEE \\
+\hline
+\hline
+LM & 0  & -4.5977  & -1.2994   & -41.5292  & 0.0000  \\
+\hline
+LM-FE & 4.8193  & 0   & 3.4573    & -38.7114  & 4.8193  \\
+\hline
+LM-RI & 1.3165  & -3.3418  & 0    & -40.7595  & 1.3165  \\
+\hline
+LM-RS & 71.0256 & 63.1624  & 68.8034   & 0    & 71.0256  \\
+\hline
+GEE & 0.0000  & -4.5977  & -1.2994   & -41.5292  & 0  \\
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X:} Main effect slope test statistic percent change matrix, $FBLN1 \sim CD34$ variable pairing
+\end{center}
+
+## Parameter Value Comparisons
+
+A comparison of main effect slope coefficient, standard error and test statistic across modeling approaches within variable pairings indicates that estimates produced by the LM and GEE methods are numerically indistinguishable at resolutions greater than $10^{-4}$.  The LM-FE and LMM-RI method estimates are also similar since estimates for each parameter type (coefficient, standard error and test statistic) exhibit magnitude and directional similarities in both variable pairings.  
+
+The LMM-RS estimates for the fixed effect slope parameter standard error is the highest when compared to the corresponding estimates within variable pairing as generated by other modeling methods.  In contrast, the standard error of the fixed effect slope parameter is lowest for the LMM-RI model within variable pairings.  The LM-FE model has a lower fixed effect slope standard error than either the LM or the GEE model within both variable combinations.  
+
+The differences in test statistics of the fixed effect slope parameter for each modeling method within each variable pairing are analogous to the differences in slope coefficients previously noted.  In particular, test statistics have similar values between the LM and GEE models as well as between the LM-FE and LMM-RI models.  Test statistics calculated for the LMM-RS model have the most irregular values, and also result in calculated p-values that have decreased significance in up to three orders of magnitude of percent change.
+
+<!------------------------------------------------------------------------------>
+
+## Nested Model Comparisons
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+Variable Pair & Model & Resid DF & RSS & DF & Sum of Squares & F-stat & P(>F) \\
+\hline
+\hline
+\multirow{2}{*}{MALAT1-CD19} & LM & 1108 & 1167.76 & & & & \\
+ & LM-FE & 1094 & 935.89 & 14 & 231.87 & 19.36 &  6.4776e-44 \\
+\hline
+\hline
+\multirow{2}{*}{FBLN1-CD34} & LM & 1108 & 650.51 & & & & \\
+ & LM-FE & 1094 & 214.92 & 14 & 435.59 & 158.38 &  2.8058e-251 \\
+\hline
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X:} ANOVA nested model comparison table for testing the inclusion of the subject-specific fixed-effect intercept
+\end{center}
+
+
+\textbf{Table X!X} above is a nested model comparison, the result of which is an F-test statistic indicating that there is very strong evidence to support the inclusion of the subject-specific fixed-effect intercept into the LM model. 
+
+
+\vspace{30pt}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Variable Pair & Model & df & AIC & logLik & L.Ratio & p-value \\
+\hline
+\hline
+\multirow{2}{*}{MALAT1-CD19} & LM & 3 & 3224.097 & -1609.048 &  & \\
+ & LMM-RI & 4 & 3032.024 & -1512.012 & 194.0722 & 4.1068e-44  \\
+\hline
+\hline
+\multirow{2}{*}{FBLN1-CD34} & LM & 3 & 2572.807 & -1283.403 &  & \\
+ & LMM-RI & 4 & 1438.086 & -715.043 & 1136.72 & 3.4517e-249  \\
+\hline
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X:} ANOVA nested model comparison table for testing the inclusion of the subject-specific random effect intercept
+\end{center}
+
+
+\textbf{Table X!X} above is a nested model comparison, the result of which is a likelihood ratio statistic indicating that there is very strong evidence to support the inclusion of the subject-specific random effect intercept into the LM model. 
+
+\vspace{30pt}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Variable Pair & Model & df & AIC & logLik & L.Ratio & p-value \\
+\hline
+\hline
+\multirow{2}{*}{MALAT1-CD19} & LMM-RI & 4 & 3032.024 & -1512.012 &  & \\
+ & LMM-RS & 6 & 2993.820 & -1490.910 & 42.20503 & 6.8437e-10  \\
+\hline
+\hline
+\multirow{2}{*}{FBLN1-CD34} & LMM-RI & 4 & 1438.086 & -715.043 &  & \\
+ & LMM-RS & 6 & 1438.068 & -713.034 & 4.018095 & 0.1341  \\
+\hline
+\end{tabular}
+
+\vspace{5pt}
+
+\textbf{Table X!X:} ANOVA nested model comparison table for testing the inclusion of the subject-specific random effect slope
+\end{center}
+
+
+\textbf{Table X!X} above is a nested model comparison, the result of which is a likelihood ratio statistic idicating that there is very strong evidence to support the inclusion of the subject-specific random effect slope into the LMM-RI model for the $MALAT1 \sim CD19$ variable pairing. However, there is insufficient evidence to support the inclusion of the subject-specific random effect slope into the LMM-RI model for the $FBLN1 \sim CD34$ variable pairing.
+
