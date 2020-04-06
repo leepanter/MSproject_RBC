@@ -1,0 +1,138 @@
+---
+csl: mathematical-biosciences-and-engineering.csl
+output:
+  pdf_document: 
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+  word_document: 
+geometry: margin=1.0in
+fontsize: 12pt
+subtitle: Version v2.2-Model Descriptions
+bibliography: Bib_AccRefSheet.bib
+---
+
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+
+
+<!-- ####	 Set Working Directory	 ####   -->
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/FinalizedWriteUps/V2.2/4 Model Descriptions"
+setwd(WD)
+```
+<!------------------------------------------------------------------------------>
+
+<!------------------------------------------------------------------------------>
+
+## Generalized Estimating Equations (GEE)
+
+The final modeling method considered is generalized estimating equations (GEE). The GEE method is an extension of the methods used to estimate Generalized Linear Models (GLMs) to categorical type responses [@Introduction2013GeneralizedEstimatingEquations].  
+
+focuses on estimating the fixed effect parameters specified within a model.  The method does not directly estimate variances and covariances, but instead approximates these values using a "working variance-covariance" structure. 
+
+Procedurally GEE estimates are computed by finding numerical solutions for
+an \textit{estimating equation} $U(\mathbf{\beta})=0$, where
+
+\begin{equation}
+U(\mathbf{\beta})=\sum_{i=1}^{N} \left \{\mathbf{D}_{i}^{T}\mathbf{V}_{i}^{-1}\left(\mathbf{y}_{i} - \mathbf{\mu}_{i}(\beta) \right)   \right \}
+\end{equation}
+
+and
+\begin{align*}
+g \left(\mathbf{\mu}_{i} (\beta) \right) &=\mathbf{\eta}_{i} = E\left [\mathbf{Y}_{i} | X_{i} \right ]\\
+&= X_{i}^{T} \mathbf{\beta}
+\end{align*} 
+outlines the dependence of the marginal expectation of the response on the covariates through the link function $g()$, and therefore:
+\begin{align*}
+\mathbf{\mu}_{i} (\beta)  &= g^{-1} \left(\mathbf{\eta}_{i}\right)  = g^{-1} \left(E\left [\mathbf{Y}_{i} | X_{i} \right ] \right) \\
+&= g^{-1} \left(X_{i}^{T} \mathbf{\beta} \right) 
+\end{align*}
+The first derivative matrix $\mathbf{D_{i}}$ is given by:
+$$\mathbf{D}_{i}=
+\begin{bmatrix}
+\frac{\partial \mu_{i1}}{\beta_{1}} & \frac{\partial \mu_{i1}}{\beta_{2}} & \cdots & \frac{\partial \mu_{i1}}{\beta_{p}}\\
+\frac{\partial \mu_{i2}}{\beta_{1}} & \frac{\partial \mu_{i2}}{\beta_{2}} & \cdots & \frac{\partial \mu_{i2}}{\beta_{p}}\\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial \mu_{in_{i}}}{\beta_{1}} & \frac{\partial \mu_{in_{i}}}{\beta_{2}} & \cdots & \frac{\partial \mu_{in_{i}}}{\beta_{p}}\\
+\end{bmatrix}$$
+
+$\mathbf{V}_{i}$ is the working covariance matrix.  This matrix can be estimated from hyper parameters created in the process of numerically solving for the GEE estimates $\beta_{GEE}$ that solve $U\left(\beta\right)=0$. Please see Fitzmaurice, Laird, and Ware [@fitzmaurice2012applied] for more information.
+
+The GEE algorithm uses the following general steps to converge at an estimate:
+
+1. Generalized linear modeling methods employing maximum likelihood estimation are used to obtain intial estimates for $\mathbf{\beta}$
+2. Estimates for $\mathbf{\beta}$ (from 1) used to compute hyper-parameters
+3. New estimates for hyper-parameters and working covariance matrix ($\mathbf{V}_{i}$) used to obtain new estimates for $\mathbf{\beta}$ by solving (1)
+4. Repeat Steps 2 & 3 until algorithm converges
+
+The algorithm is robust to misspecification of the observational covariance structure.  So initially incorrect specifications of the working covariance matrix still converge to the appropriate structure form with algorithmic iteration.   
+
+The GEE algorithm is stable, in-part due to the fact that the method estimates population-average effects.  Each of the previous methods (model LM withstanding) have subject-specific interpretations, but the GEE algorithm provides marginal parameter estimates.  These values do not represent any specific subject, but rather a \textit{hypothetical} average subject.
+
+According to Fitzmaurice, Laird, and Ware [@fitzmaurice2012applied], responses modeled with the GEE process need to be stationary, i.e:
+
+$$E\left [ Y_{ij} | \mathbf{X}_{i} \right ]=E\left [ Y_{ij} | X_{i1}, \ldots, X_{in_{i}}\right ]=E\left [ Y_{ij} | X_{ij}\right ]$$
+The scRNA-seq data is assumed to be independent within-subject, therefore:
+
+$$E\left [Y_{ij} | X_{ij}\right ] = E\left [Y_{ij} | X_{ij'}\right ]$$
+$$\forall j \in \left \{  1, \ldots, n_{i}\right \}  \quad j\neq j'$$
+as needed.
+
+The three-part specification of the GEE framework includes:
+
+1. The link function and linear predictor
+2. Variance function
+3. A working covariance matrix 
+
+All three items are chosen so that the resulting model estimates are comparable to preceding estimates for intercept and slope. Therefore, the identity link function will be assumed:
+$$g(x)=x$$
+in conjunction with the linear predictor:
+$$g(\mu_{i})=\eta_{i} = \beta_{0} + \beta_{1}X_{i}$$
+which implies the modeling equation:
+$$E\left [Y_{ij} \right ]=\mu_{ij}=\eta_{ij}= \beta_{0} + \beta_{1}X_{ij}$$
+Additionally, an identity variance function will be assumed:
+\begin{align*}
+Var\left(Y_{ij} \right) &= \phi \nu\left(\mu_{ij}   \right)\\
+&= \phi \mu_{ij}
+\end{align*}
+and a working covariance matrix structure for repeated measures that correspond to the assumption of independence of observations within a subject will be specified as:
+$$\left [ Cov\left(Y_{ij}, Y_{ik}\right)\right ]_{jk}=
+\begin{cases}
+Var\left(Y_{ij}\right)  \quad &\mbox{if} \quad j=k \\
+0 \quad &\mbox{if} \quad j \neq k \\
+\end{cases}$$
+$$for \quad j,k \in \left \{  1, \ldots, n_{i}   \right \}$$
+
+
+## Parameter Interpretations 
+
+The GEE and LM modeling techniques are methods of obtaining estimates of population-averaged parameters.  These parameter values are interpreted as contributing to the response of the \textit{hypothetical} average subject  (not representative of any single subject within the sample).
+
+Suppose that $\hat{\beta}_{population}$ represents an estimate obtained for the fixed effect slope as obtained by one of the previously describe \textit{population-averaged} modeling methods.  An interpretation of this parameter is:  **across all subjects, a one-unit increase in the predictor ($X_{ij}$) is associated with a $(\hat{\beta}_{population})$ unit change in the expected outcome ($Y_{ij}$)**
+
+Conversely, the LM-FE, LMM-RI and LMM-RS modeling techniques are methods of obtaining estimates of subject-specific parameters.  These parameter values are interpreted as contributing to the average response having controlled for a constant subject of origin (i.e. the parameter estimate attributable to a single subject within the sample) 
+  
+Suppose that $\hat{\beta}_{subject}$ represents an estimate obtained for the fixed effect slope as obtained by one of the previously describe \textit{subject-specific} modeling methods.  An interpretation of this parameter is: **for a given subject (controlling for the subject of origin) a one-unit increase in the predictor ($X_{ij}$) is associated with a $(\hat{\beta}_{subject})$ unit change in the expected outcome ($Y_{ij}$).**
+
+
+
+<!------------------------------------------------------------------------------>
+
+
+# References
+
+\bibliography{Bib_AccRefSheet}
+
+
+

@@ -1,0 +1,74 @@
+---
+csl: mathematical-biosciences-and-engineering.csl
+output:
+  word_document: 
+  pdf_document: 
+    df_print: kable
+    includes:
+      in_header: Rmarkdown_preamble.tex
+geometry: margin=1.0in
+fontsize: 12pt
+subtitle: Version v2.2-Model Descriptions
+bibliography: Bib_AccRefSheet.bib
+---
+
+
+<!------------------------------------------------------------------------------>
+<!--  ####  KNITR Setup & Script Information   #### -->
+<!------------------------------------------------------------------------------>
+
+<!--  ####  KNITR Specs   #### -->
+```{r setup, cache=TRUE, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(echo=FALSE, 
+                      cache = TRUE, 
+                      fig.align = "center",
+                      fig.width = 5)
+```
+
+
+<!-- ####	 Set Working Directory	 ####   -->
+```{r, echo=FALSE}
+WD="/Users/lee/Documents/GitHub/MSproject_RBC/MSproject_RBC/FinalizedWriteUps/vFINAL/4 Model Descriptions/GEEv2"
+setwd(WD)
+```
+<!------------------------------------------------------------------------------>
+
+<!------------------------------------------------------------------------------>
+
+## Generalized Estimating Equations (GEE)
+
+The final modeling method considered is generalized estimating equations (GEE). The GEE framework requires the specification of a systematic, and random component.  It also requires the specification of an assumed covariance structure.  This structure specifies the within-subject correlation, for which the GEE algorithm iteratively refits estimated values.  
+
+The components for the GEE model are:
+
+- The random component
+    - It is assumed the responses are \textit{approximately} normally distributed.
+
+- The systematic component
+    - It is assumed that the linear predictor $\eta_{ij}$ is a linear combination of the covariates $$\eta_{ij} = \beta_{0} + \beta_{1} X_{ij}$$
+
+- The link function
+    - It is assumed that the link function $g(\mu_{ij})=\mu_{ij}$ provides the relationship between the linear predictor and the expected outcome, i.e: $$E\left [Y_{ij} | X_{ij} \right ] = g(\mu_{ij}) = \mu_{ij}= \eta_{ij} = \beta_{0}+ \beta_{1} X_{ij}$$
+  
+- Working Covariance Structure
+    - It is assumed that observations within a subject are independent, therefore:
+$$\left [ Cov\left(Y_{ij}, Y_{ik}\right)\right ]_{jk}=
+\begin{cases}
+Var\left(Y_{ij}\right)  \quad &\mbox{if} \quad j=k \\
+0 \quad &\mbox{if} \quad j \neq k \\
+\end{cases}$$
+$$for \quad j,k \in \left \{  1, \ldots, n_{i}   \right \}$$
+
+Estimates for GEE parameters are calculated by solving an \textit{estimating equation} using the Newton-Raphson iterative root-finding algorithm.  Detailed method descriptions, including derivation and solving of the estimating equations can be found in Fitzmaurice, Laird, and Ware [@fitzmaurice2012applied].
+
+The GEE algorithm is robust to misspecification of the working covariance structure.  So initially incorrect specifications of the working covariance matrix still converge to the appropriate structure form with algorithmic iteration.  This stability is due in-part to the fact that the method estimates population-average effects.  
+
+<!------------------------------------------------------------------------------>
+
+
+# References
+
+\bibliography{Bib_AccRefSheet}
+
+
+
