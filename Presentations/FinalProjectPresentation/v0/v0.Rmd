@@ -1,0 +1,144 @@
+---
+title: "Comparing Models of Subject-Clustered Single-Cell data"  
+subtitle: "Lee Panter"
+author: 
+  - Audrey Hendricks$^1$, PhD-Committee Chair and Advisor \newline
+  - Stephanie Santorico$^1$, PhD-Committe Member  \newline
+  - Rhonda Bacher$^2$, PhD-Committee Member \newline
+institute:
+  - $^1$The University of Colorado-Denver
+  - $^2$The University of Florida
+output: beamer_presentation
+bibliography: Bib_AccRefSheet.bib
+csl: mathematical-biosciences-and-engineering.csl
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Presentation Overview (1/2)
+
+\begin{center}
+  \textbf{\underline{\Large{Analysis Summary}}}
+\end{center}
+
+- \large{What problem is being addressed?}
+  - Single-Cell (SC) data increasing prevalence
+  - SC data with multiple subjects emerging for analysis
+  - Not clear how to analyze subject level relationships 
+
+- \large{What needs to be done?}
+  - Demonstrate: existing statistical methods can account for subject level relationships (SLRs) (in SC data)
+  - Compare: how each method differs/resembles the others  
+
+- \large{What do I do to address the problem?}
+  - Outline five modeling methods
+    - Demonstrate: how (if) the models account for SLRs in SC data
+    - Compare: how model frameworks compare in theory
+  - Apply modeling methods to a motivating SC data example 
+    - Demonstrate: 
+
+
+## Presentation Overview (2/2)
+\begin{center}
+\textbf{\underline{\Large{Presentation Goals}}}
+\end{center}
+
+\vspace{10pt}
+
+- \large{Demonstrate a need for the analysis conducted}
+
+\vspace{10pt}
+
+- \large{Describe case study, and why it is relevant to the analysis needed} 
+
+\vspace{10pt}
+
+- \large{Outline methods and how they address established needs, and why they are relevant to case study} 
+
+\vspace{10pt}
+
+- \large{Highlight important results from applying methods to case analysis data}
+
+\vspace{10pt}
+
+- \large{Show that results are relevant to the demonstrated need}
+
+
+
+## Presentation Outline (1/2)
+
+- Introduction
+
+  - Motivation 
+    - \textit{Demonstrate a need for the analysis conducted}
+    
+  - Single-Cell Data 
+  
+  - Descriptions of Applied Data
+    - \textit{Describe why case study is relevant to needed analysis}
+  
+\vspace{5pt}
+
+- Model Descriptions
+
+  - Overview of selected models, notation
+  
+  - Individual model descriptions
+  
+  - Model comparisons & parameter interpretations
+    - \textit{Demonstrate how model comparisons address established analysis needs, and why they are relevant to the case study}
+
+
+## Presentation Outline (2/2)
+
+- Case Study Analysis Results
+
+  - Comparing models by directly using estimated parameter values
+  
+  - Comparing models using nested model statistics
+    - \textit{Highlight important results from applying methods to case analysis data}
+  
+\vspace{10pt}
+
+- Discussion
+  
+  - Interpretation of important results
+  
+  - Justification of importance
+  
+    - \textit{Show that results are relevant to the demonstrated need}
+
+
+## Introduction 
+![](Slide3ish.pdf)
+
+
+## Introduction: Motivation
+
+- Bulk Sequencing Methods:
+  - Analylize combined expression of thousand/millions of cells
+  - Often fail to capture underlying variability within sample profiles
+
+\vspace{5pt}
+
+- Since Cell (SC) Sequencing Methods:
+  - Analyze expression measurements specific to individual cells
+  - Hundred/thousands of SC measurements used to estimate espression variability within samples
+
+\vspace{5pt}
+
+- Benefits of SC Methods
+  - Suited for detecting expressions differentially expressed across conditions[@bacher2016design]
+  - Useful for identifying rare cellular subpopulations [@staahlberg2010defining]
+
+\vspace{5pt}
+
+- Technological Improvements in Producing SC data
+  - Makes SC data easier, and more economical to generate than ever before
+  -
+
+[@arazi2018immune]
+
+## Referrences
